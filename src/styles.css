@@ -1172,11 +1172,11 @@ footer > p {
   .reverse .sticky-visual {
     position: sticky;
     z-index: 2;
-    top: 12px;
+    top: 50svh;
     align-self: start;
     width: min(720px, 100%);
     margin: 0 auto;
-    transform: none;
+    transform: translateY(-50%);
   }
 
   .critique-list,
