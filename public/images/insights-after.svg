@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#e8e7e2"/>
+  <rect x="24" y="24" width="1152" height="752" rx="16" fill="#fbfaf7"/>
+  <rect x="24" y="24" width="1152" height="68" rx="16" fill="#212523"/>
+  <text x="58" y="67" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#f8f6f0">Metricbox</text>
+  <text x="990" y="64" font-family="Arial,sans-serif" font-size="13" fill="#bbc0bb">May 01  May 30</text><circle cx="1130" cy="58" r="16" fill="#67836f"/>
+  <g transform="translate(58 126)">
+    <text x="0" y="22" font-family="Arial,sans-serif" font-size="13" fill="#71766f">PERFORMANCE OVERVIEW</text>
+    <text x="0" y="68" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#252925">Growth is holding steady.</text>
+    <text x="0" y="97" font-family="Arial,sans-serif" font-size="15" fill="#72766f">Visitor quality improved while acquisition volume remained stable.</text>
+    <rect x="869" y="38" width="215" height="48" rx="8" fill="#eae7df"/><text x="910" y="68" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#353a35">View detailed report ’</text>
+  </g>
+  <g transform="translate(58 258)">
+    <rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">VISITORS</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">128.4k</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">‘ 4.8%</text>
+    <g transform="translate(250)"><rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">CONVERSION</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">7.42%</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">‘ 0.9%</text></g>
+    <g transform="translate(500)"><rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">RETENTION</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">68%</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">‘ 3.1%</text></g>
+    <g transform="translate(750)"><rect width="334" height="125" rx="12" fill="#2b332e"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#b4bdb6">KEY SIGNAL</text><text x="20" y="69" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fbfaf7">Organic is your strongest channel</text><text x="20" y="96" font-family="Arial,sans-serif" font-size="12" fill="#c7cec8">42% of high-intent traffic</text></g>
+  </g>
+  <g transform="translate(58 420)">
+    <rect width="724" height="306" rx="12" fill="#f7f5f0" stroke="#ddd9d0"/>
+    <text x="22" y="39" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#303530">Visitor quality</text><text x="579" y="39" font-family="Arial,sans-serif" font-size="12" fill="#747871">Last 30 days</text>
+    <g stroke="#e2ded5"><line x1="40" y1="88" x2="689" y2="88"/><line x1="40" y1="145" x2="689" y2="145"/><line x1="40" y1="202" x2="689" y2="202"/><line x1="40" y1="259" x2="689" y2="259"/></g>
+    <path d="M40 248 C92 233 111 212 158 220 S231 167 280 184 S349 127 401 149 S478 103 525 116 S612 66 689 85 L689 259 L40 259Z" fill="#dfe9e2"/>
+    <path d="M40 248 C92 233 111 212 158 220 S231 167 280 184 S349 127 401 149 S478 103 525 116 S612 66 689 85" fill="none" stroke="#547663" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(806 420)">
+    <rect width="336" height="306" rx="12" fill="#f2efe8" stroke="#ddd9d0"/>
+    <text x="22" y="39" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#303530">Channel contribution</text>
+    <g font-family="Arial,sans-serif" font-size="12" fill="#626760"><text x="22" y="91">Organic search</text><text x="22" y="145">Direct</text><text x="22" y="199">Referral</text><text x="22" y="253">Social</text></g>
+    <g fill="#dad7cf"><rect x="22" y="104" width="292" height="10" rx="5"/><rect x="22" y="158" width="292" height="10" rx="5"/><rect x="22" y="212" width="292" height="10" rx="5"/><rect x="22" y="266" width="292" height="10" rx="5"/></g>
+    <g fill="#66806e"><rect x="22" y="104" width="238" height="10" rx="5"/><rect x="22" y="158" width="182" height="10" rx="5"/><rect x="22" y="212" width="127" height="10" rx="5"/><rect x="22" y="266" width="74" height="10" rx="5"/></g>
+  </g>
+</svg>
