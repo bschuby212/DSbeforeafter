@@ -68,7 +68,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 650;
   letter-spacing: -0.02em;
 }
@@ -81,7 +81,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   gap: 32px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -122,7 +122,7 @@ button:focus-visible {
   gap: 10px;
   margin: 0 0 32px;
   color: #5f636b;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 570;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -167,7 +167,7 @@ button:focus-visible {
   gap: 10px;
   padding-bottom: 6px;
   border-bottom: 1px solid #aeb0b2;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 570;
   transition: border-color 180ms ease, color 180ms ease;
 }
@@ -186,7 +186,7 @@ button:focus-visible {
   color: #777b81;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 540;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -220,7 +220,7 @@ button:focus-visible {
 .section-heading > p {
   margin: 7px 0 0;
   color: var(--blue);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 620;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -243,13 +243,13 @@ button:focus-visible {
 
 .critique-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.28fr) minmax(330px, 0.72fr);
-  gap: clamp(54px, 7vw, 110px);
+  grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.72fr);
+  gap: clamp(36px, 5vw, 80px);
   align-items: start;
 }
 
 .reverse .critique-layout {
-  grid-template-columns: minmax(330px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.28fr);
 }
 
 .reverse .sticky-visual {
@@ -282,9 +282,10 @@ button:focus-visible {
 
 .visual-toolbar > span {
   overflow: hidden;
+  min-width: 0;
   max-width: 52%;
   color: #7c8087;
-  font-size: 11px;
+  font-size: 14px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -305,7 +306,7 @@ button:focus-visible {
   background: transparent;
   border: 0;
   border-radius: 5px;
-  font-size: 9px;
+  font-size: 14px;
   font-weight: 650;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -427,7 +428,7 @@ button:focus-visible {
   position: absolute;
   z-index: 6;
   bottom: 6%;
-  width: min(46%, 250px);
+  width: min(56%, 280px);
   padding: clamp(8px, 1.25vw, 15px);
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(23, 105, 255, 0.3);
@@ -450,7 +451,7 @@ button:focus-visible {
   align-items: center;
   gap: 5px;
   color: var(--blue);
-  font-size: clamp(7px, 0.7vw, 10px);
+  font-size: 14px;
   font-weight: 650;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -460,7 +461,7 @@ button:focus-visible {
   display: block;
   margin-top: 6px;
   color: #272b31;
-  font-size: clamp(8px, 0.85vw, 12px);
+  font-size: 14px;
   font-weight: 590;
   line-height: 1.35;
 }
@@ -485,7 +486,7 @@ button:focus-visible {
   gap: 7px;
   margin: 13px 2px 0;
   color: #676b72;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 /* Analytics mockup */
@@ -998,7 +999,7 @@ button:focus-visible {
   color: #a2a5aa;
   border: 1px solid #d6d7d7;
   border-radius: 50%;
-  font-size: 8px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 590;
   letter-spacing: 0.04em;
@@ -1048,7 +1049,7 @@ button:focus-visible {
   gap: 7px;
   margin-bottom: 16px;
   color: var(--blue);
-  font-size: 9px;
+  font-size: 14px;
   font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1075,7 +1076,7 @@ button:focus-visible {
   gap: 6px;
   margin-top: 17px;
   color: var(--blue);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 580;
   opacity: 0;
   transition: opacity 180ms ease;
@@ -1104,7 +1105,7 @@ button:focus-visible {
 .principles > p {
   margin: 8px 0 0;
   color: var(--blue);
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 620;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1138,7 +1139,7 @@ button:focus-visible {
   gap: 12px;
   padding: 18px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -1148,7 +1149,7 @@ button:focus-visible {
 
 .principles li b {
   color: var(--blue);
-  font-size: 9px;
+  font-size: 14px;
 }
 
 footer {
@@ -1164,7 +1165,7 @@ footer > div {
 
 footer > div span {
   color: #86898f;
-  font-size: 12px;
+  font-size: 14px;
   text-transform: uppercase;
 }
 
@@ -1191,7 +1192,7 @@ footer > p {
   padding-top: 22px;
   color: #7d8086;
   border-top: 1px solid #33363a;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 @media (max-width: 900px) {
@@ -1204,7 +1205,9 @@ footer > p {
   .principles ol {
     grid-column: 2;
   }
+}
 
+@media (max-width: 700px) {
   .critique-layout,
   .reverse .critique-layout {
     display: grid;
@@ -1219,6 +1222,7 @@ footer > p {
   .reverse .critique-list {
     grid-column: 1;
     grid-row: 1;
+    min-width: 0;
   }
 
   .sticky-visual,
@@ -1256,7 +1260,7 @@ footer > p {
     align-items: center;
     gap: 6px;
     color: var(--blue);
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 650;
     letter-spacing: 0.07em;
     text-transform: uppercase;
@@ -1274,13 +1278,13 @@ footer > p {
     max-width: 650px;
     margin: 9px 0 0;
     color: #565b63;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.5;
   }
 
   .sticky-visual .visual-wrap {
     width: min(100%, calc((100svh - 260px) * 1.34));
-    min-width: 360px;
+    min-width: 0;
     margin: 10px auto 0;
   }
 
@@ -1383,12 +1387,12 @@ footer > p {
   }
 
   .mobile-current-critique > p {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .sticky-visual .visual-wrap {
     width: min(100%, calc((100svh - 258px) * 1.1));
-    min-width: 286px;
+    min-width: 0;
   }
 
   .visual-toolbar {
