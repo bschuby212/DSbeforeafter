@@ -20,5 +20,12 @@ describe('portfolio critique', () => {
     expect(afterButtons[0]).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByText('A focused narrative with clear next steps')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Review order' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', {
+      name: 'Resolution: One story, from signal to action.',
+    }))
+
+    expect(afterButtons[0]).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('Clear priority · useful context · direct action')).toBeInTheDocument()
   })
 })

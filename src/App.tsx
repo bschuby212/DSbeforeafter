@@ -27,6 +27,12 @@ type CritiqueSet = {
   mockup: 'insights' | 'checkout'
   reverse?: boolean
   critiques: Critique[]
+  resolution: {
+    title: string
+    description: string
+    note: string
+    notePosition: 'left' | 'right'
+  }
 }
 
 const critiqueSets: CritiqueSet[] = [
@@ -39,6 +45,13 @@ const critiqueSets: CritiqueSet[] = [
     beforeCaption: 'Useful data, without a point of view',
     afterCaption: 'A focused narrative with clear next steps',
     mockup: 'insights',
+    resolution: {
+      title: 'One story, from signal to action.',
+      description:
+        'The new hierarchy connects the key outcome, its context, and one useful next step.',
+      note: 'Clear priority · useful context · direct action',
+      notePosition: 'right',
+    },
     critiques: [
       {
         label: 'Hierarchy',
@@ -84,6 +97,13 @@ const critiqueSets: CritiqueSet[] = [
     afterCaption: 'A guided flow that builds confidence',
     mockup: 'checkout',
     reverse: true,
+    resolution: {
+      title: 'Confidence before commitment.',
+      description:
+        'Progress, grouped inputs, and visible costs now answer questions before they become friction.',
+      note: 'Known progress · lower effort · no surprises',
+      notePosition: 'left',
+    },
     critiques: [
       {
         label: 'Orientation',
@@ -214,15 +234,17 @@ function Screenshot({
   set,
   active,
   mode,
+  isResolved,
   onModeChange,
 }: {
   set: CritiqueSet
   active: number
   mode: 'before' | 'after'
+  isResolved: boolean
   onModeChange: (mode: 'before' | 'after') => void
 }) {
-  const critique = set.critiques[active]
-  const region = set.critiques[active].highlight
+  const critique = set.critiques[Math.min(active, set.critiques.length - 1)]
+  const region = critique.highlight
 
   return (
     <div className="visual-wrap">
@@ -243,7 +265,7 @@ function Screenshot({
         <span aria-live="polite">{mode === 'before' ? set.beforeCaption : set.afterCaption}</span>
       </div>
       <div
-        aria-label={`${mode === 'before' ? 'Before design' : 'After design'} for ${set.title}. ${mode === 'before' ? `Current issue: ${critique.title}` : set.afterCaption}.`}
+        aria-label={`${mode === 'before' ? 'Before design' : 'After design'} for ${set.title}. ${mode === 'before' ? `Current issue: ${critique.title}` : `${set.afterCaption}. ${isResolved ? set.resolution.description : ''}`}.`}
         className={`screenshot-shell is-${mode}`}
         role="img"
       >
@@ -257,7 +279,7 @@ function Screenshot({
             {set.mockup === 'insights'
               ? <InsightsMockup mode={mode} />
               : <CheckoutMockup mode={mode} />}
-            {mode === 'before' && (
+            {mode === 'before' && !isResolved && (
               <>
                 <div className="screenshot-dim" />
                 <div
@@ -274,12 +296,23 @@ function Screenshot({
                 </div>
               </>
             )}
+            {mode === 'after' && isResolved && (
+              <div
+                className={`resolution-note ${set.resolution.notePosition}`}
+                key={`${set.id}-resolution`}
+              >
+                <span><Check size={11} /> Why it works</span>
+                <strong>{set.resolution.note}</strong>
+              </div>
+            )}
           </div>
         </div>
       </div>
       <p className="visual-hint">
         <MousePointer2 size={13} />
-        {mode === 'before'
+        {isResolved && mode === 'after'
+          ? 'New design · the resolution stays in view as the story concludes'
+          : mode === 'before'
           ? 'Blue marks the current issue · Switch to After to see the resolution'
           : 'Resolution shown · Switch to Before to continue the critique'}
       </p>
@@ -332,7 +365,7 @@ function CritiqueList({
           >
             <span className="progress-rail" aria-hidden="true">
               <i>{String(index + 1).padStart(2, '0')}</i>
-              {index < set.critiques.length - 1 && <b />}
+              <b />
             </span>
             <span className="critique-copy">
               <span className="critique-label"><Icon size={14} />{critique.label}</span>
@@ -343,6 +376,24 @@ function CritiqueList({
           </button>
         )
       })}
+      <button
+        aria-label={`Resolution: ${set.resolution.title}`}
+        aria-pressed={active === set.critiques.length}
+        className={`critique-item resolution-step ${active === set.critiques.length ? 'active' : ''}`}
+        onClick={() => onActiveChange(set.critiques.length)}
+        ref={(element) => { itemRefs.current[set.critiques.length] = element }}
+        type="button"
+      >
+        <span className="progress-rail" aria-hidden="true">
+          <i><Check size={12} /></i>
+        </span>
+        <span className="critique-copy">
+          <span className="critique-label"><Sparkles size={14} />The resolution</span>
+          <strong>{set.resolution.title}</strong>
+          <span className="critique-description">{set.resolution.description}</span>
+          <span className="critique-link">See why it works <ArrowRight size={13} /></span>
+        </span>
+      </button>
     </div>
   )
 }
@@ -352,8 +403,10 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
   const [mode, setMode] = useState<'before' | 'after'>('before')
   const handleActiveChange = useCallback((index: number) => {
     setActive(index)
-    setMode('before')
-  }, [])
+    setMode(index === set.critiques.length ? 'after' : 'before')
+  }, [set.critiques.length])
+  const isResolved = active === set.critiques.length
+  const activeStory = isResolved ? set.resolution : set.critiques[active]
 
   return (
     <section className={`critique-section ${set.reverse ? 'reverse' : ''}`} id={set.id}>
@@ -365,12 +418,17 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
       <div className="critique-layout">
         <div className="sticky-visual">
           <div aria-live="polite" className="mobile-current-critique">
-            <span>{String(active + 1).padStart(2, '0')} · {set.critiques[active].label}</span>
-            <strong>{set.critiques[active].title}</strong>
-            <p>{set.critiques[active].description}</p>
+            <span>
+              {isResolved
+                ? <><Check size={12} /> The resolution</>
+                : <>{String(active + 1).padStart(2, '0')} · {set.critiques[active].label}</>}
+            </span>
+            <strong>{activeStory.title}</strong>
+            <p>{activeStory.description}</p>
           </div>
           <Screenshot
             active={active}
+            isResolved={isResolved}
             mode={mode}
             onModeChange={setMode}
             set={set}
