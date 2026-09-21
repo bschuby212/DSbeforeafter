@@ -6,7 +6,7 @@ import {
   MousePointer2,
   Sparkles,
 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import './styles.css'
 
 type Critique = {
@@ -123,7 +123,7 @@ const critiqueSets: CritiqueSet[] = [
 
 function InsightsMockup({ mode }: { mode: 'before' | 'after' }) {
   return (
-    <div className={`product-ui insights-ui ${mode}`}>
+    <div aria-hidden="true" className={`product-ui insights-ui ${mode}`}>
       <aside className="mock-sidebar" aria-hidden="true">
         <span className="mock-logo">n</span>
         <span />
@@ -159,7 +159,7 @@ function InsightsMockup({ mode }: { mode: 'before' | 'after' }) {
           <div className="chart-grid">
             <div className="chart-bars" aria-hidden="true">
               {[42, 57, 51, 68, 62, 78, 49, 54, 38, 66, 73, 82].map((height, index) => (
-                <i key={height + index} style={{ height: `${mode === 'after' && index > 7 ? height - 18 : height}%` }} />
+                <i key={`bar-${index}`} style={{ height: `${mode === 'after' && index > 7 ? height - 18 : height}%` }} />
               ))}
             </div>
           </div>
@@ -176,7 +176,7 @@ function InsightsMockup({ mode }: { mode: 'before' | 'after' }) {
 
 function CheckoutMockup({ mode }: { mode: 'before' | 'after' }) {
   return (
-    <div className={`product-ui checkout-ui ${mode}`}>
+    <div aria-hidden="true" className={`product-ui checkout-ui ${mode}`}>
       <header className="shop-header">
         <strong>Northstar</strong>
         <span>Secure checkout</span>
@@ -202,7 +202,7 @@ function CheckoutMockup({ mode }: { mode: 'before' | 'after' }) {
           <div className="order-line"><span>Subtotal</span><b>$128</b></div>
           <div className="order-line"><span>Shipping</span><b>{mode === 'after' ? 'Free' : '—'}</b></div>
           <div className="order-total"><span>Total</span><strong>$128</strong></div>
-          <button type="button">{mode === 'after' ? 'Review order' : 'Continue'} <ArrowRight size={11} /></button>
+          <div className="mock-action">{mode === 'after' ? 'Review order' : 'Continue'} <ArrowRight size={11} /></div>
           <p><Check size={9} /> No charge until you confirm</p>
         </aside>
       </div>
@@ -213,62 +213,75 @@ function CheckoutMockup({ mode }: { mode: 'before' | 'after' }) {
 function Screenshot({
   set,
   active,
+  mode,
+  onModeChange,
 }: {
   set: CritiqueSet
   active: number
+  mode: 'before' | 'after'
+  onModeChange: (mode: 'before' | 'after') => void
 }) {
-  const [mode, setMode] = useState<'before' | 'after'>('after')
+  const critique = set.critiques[active]
   const region = set.critiques[active].highlight
 
   return (
     <div className="visual-wrap">
       <div className="visual-toolbar">
-        <div className="view-toggle" aria-label="Screenshot view">
+        <div className="view-toggle" aria-label="Screenshot view" role="group">
           {(['before', 'after'] as const).map((view) => (
             <button
+              aria-pressed={mode === view}
               className={mode === view ? 'active' : ''}
               key={view}
-              onClick={() => setMode(view)}
+              onClick={() => onModeChange(view)}
               type="button"
             >
               {view}
             </button>
           ))}
         </div>
-        <span>{mode === 'before' ? set.beforeCaption : set.afterCaption}</span>
+        <span aria-live="polite">{mode === 'before' ? set.beforeCaption : set.afterCaption}</span>
       </div>
-      <div className={`screenshot-shell is-${mode}`}>
-        <div className="browser-bar" aria-hidden="true">
-          <span><i /><i /><i /></span>
-          <b>northstar.app</b>
-          <i />
-        </div>
-        <div className="mockup-viewport">
-          {set.mockup === 'insights'
-            ? <InsightsMockup mode={mode} />
-            : <CheckoutMockup mode={mode} />}
-          {mode === 'after' && (
-            <>
-              <div className="screenshot-dim" />
-              <div
-                className="focus-window"
-                key={`${set.id}-${active}`}
-                style={{
-                  left: `${region.x}%`,
-                  top: `${region.y}%`,
-                  width: `${region.width}%`,
-                  height: `${region.height}%`,
-                }}
-              >
-                <span>{String(active + 1).padStart(2, '0')}</span>
-              </div>
-            </>
-          )}
+      <div
+        aria-label={`${mode === 'before' ? 'Before design' : 'After design'} for ${set.title}. ${mode === 'before' ? `Current issue: ${critique.title}` : set.afterCaption}.`}
+        className={`screenshot-shell is-${mode}`}
+        role="img"
+      >
+        <div aria-hidden="true">
+          <div className="browser-bar">
+            <span><i /><i /><i /></span>
+            <b>northstar.app</b>
+            <i />
+          </div>
+          <div className="mockup-viewport">
+            {set.mockup === 'insights'
+              ? <InsightsMockup mode={mode} />
+              : <CheckoutMockup mode={mode} />}
+            {mode === 'before' && (
+              <>
+                <div className="screenshot-dim" />
+                <div
+                  className="focus-window"
+                  key={`${set.id}-${active}`}
+                  style={{
+                    left: `${region.x}%`,
+                    top: `${region.y}%`,
+                    width: `${region.width}%`,
+                    height: `${region.height}%`,
+                  }}
+                >
+                  <span>{String(active + 1).padStart(2, '0')}</span>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <p className="visual-hint">
         <MousePointer2 size={13} />
-        Select before or after to compare the experience
+        {mode === 'before'
+          ? 'Blue marks the current issue · Switch to After to see the resolution'
+          : 'Resolution shown · Switch to Before to continue the critique'}
       </p>
     </div>
   )
@@ -286,19 +299,21 @@ function CritiqueList({
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   useEffect(() => {
-    const observers = itemRefs.current.map((element, index) => {
-      if (!element) return null
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) onActiveChange(index)
-        },
-        { rootMargin: '-38% 0px -44% 0px', threshold: 0.1 },
-      )
-      observer.observe(element)
-      return observer
-    })
+    const elements = itemRefs.current.filter(
+      (element): element is HTMLButtonElement => element !== null,
+    )
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const activeEntry = entries.find((entry) => entry.isIntersecting)
+        if (!activeEntry) return
+        const index = elements.indexOf(activeEntry.target as HTMLButtonElement)
+        if (index >= 0) onActiveChange(index)
+      },
+      { rootMargin: '-38% 0px -61% 0px', threshold: 0 },
+    )
+    elements.forEach((element) => observer.observe(element))
 
-    return () => observers.forEach((observer) => observer?.disconnect())
+    return () => observer.disconnect()
   }, [onActiveChange])
 
   return (
@@ -307,6 +322,8 @@ function CritiqueList({
         const Icon = critique.icon
         return (
           <button
+            aria-label={`Critique ${index + 1} of ${set.critiques.length}: ${critique.title}`}
+            aria-pressed={active === index}
             className={`critique-item ${active === index ? 'active' : ''}`}
             key={critique.title}
             onClick={() => onActiveChange(index)}
@@ -332,6 +349,11 @@ function CritiqueList({
 
 function CritiqueSection({ set }: { set: CritiqueSet }) {
   const [active, setActive] = useState(0)
+  const [mode, setMode] = useState<'before' | 'after'>('before')
+  const handleActiveChange = useCallback((index: number) => {
+    setActive(index)
+    setMode('before')
+  }, [])
 
   return (
     <section className={`critique-section ${set.reverse ? 'reverse' : ''}`} id={set.id}>
@@ -342,9 +364,19 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
       </div>
       <div className="critique-layout">
         <div className="sticky-visual">
-          <Screenshot set={set} active={active} />
+          <div aria-live="polite" className="mobile-current-critique">
+            <span>{String(active + 1).padStart(2, '0')} · {set.critiques[active].label}</span>
+            <strong>{set.critiques[active].title}</strong>
+            <p>{set.critiques[active].description}</p>
+          </div>
+          <Screenshot
+            active={active}
+            mode={mode}
+            onModeChange={setMode}
+            set={set}
+          />
         </div>
-        <CritiqueList set={set} active={active} onActiveChange={setActive} />
+        <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
       </div>
     </section>
   )
