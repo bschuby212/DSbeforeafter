@@ -239,7 +239,9 @@ function CritiqueList({
       // Ignore collapsed/jsdom layouts where every item shares one top.
       if (uniqueTops.size === 1 && elements.length > 1) return
 
-      const activationLine = window.innerHeight * 0.36
+      // Align with the sticky media top so the first point stays active on load
+      // and later points activate as they reach the stuck media.
+      const activationLine = Math.max(72, window.innerHeight * 0.1) + 20
       let bestIndex = 0
       tops.forEach((top, index) => {
         if (top <= activationLine) bestIndex = index
@@ -327,10 +329,16 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
     if (!section || !heading || !list) return
 
     const syncMediaHeight = () => {
-      const headingStyles = getComputedStyle(heading)
-      const marginBottom = Number.parseFloat(headingStyles.marginBottom) || 0
-      const height = heading.offsetHeight + marginBottom + list.offsetHeight + 16
-      section.style.setProperty('--media-height', `${Math.max(height, 240)}px`)
+      const items = list.querySelectorAll<HTMLElement>('.critique-item')
+      const lastPoint = items[items.length - 1]
+      if (!lastPoint) return
+
+      // Use heading top as the shared media origin so sticky offset does not
+      // skew the height. Bottom of grey panel = last point bottom + 16px.
+      const height = lastPoint.getBoundingClientRect().bottom
+        - heading.getBoundingClientRect().top
+        + 16
+      section.style.setProperty('--media-height', `${Math.max(Math.round(height), 240)}px`)
     }
 
     syncMediaHeight()

@@ -222,7 +222,7 @@ button:focus-visible {
 .section-heading {
   grid-area: heading;
   max-width: 480px;
-  margin-bottom: 24px;
+  margin-bottom: 24px; /* body copy → first critique item */
 }
 
 .mobile-current-critique {
@@ -350,7 +350,9 @@ button:focus-visible {
   flex-direction: column;
   gap: 16px;
   min-width: 0;
-  padding-bottom: 0;
+  /* Extra runway so sticky progression takes more scroll distance without
+     hijacking the wheel (native feel, paced movement). */
+  padding-bottom: min(32vh, 320px);
 }
 
 .critique-item {
@@ -413,6 +415,9 @@ button:focus-visible {
 }
 
 .resolution-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   max-width: 440px;
   padding: 4px 0 0;
   background: transparent;
@@ -435,7 +440,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 24px;
+  margin-top: 0;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -641,7 +646,7 @@ footer > p {
   }
 
   .critique-list {
-    padding-bottom: 0;
+    padding-bottom: min(28svh, 280px);
   }
 
   .media-panel {
