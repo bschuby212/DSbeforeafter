@@ -319,22 +319,24 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
 
   return (
     <section className={`critique-section ${set.reverse ? 'reverse' : ''}`} id={set.id}>
-      <div className="section-heading">
-        <h2>{set.title}</h2>
-        <p>{set.summary}</p>
-      </div>
       <div className="critique-layout">
-        <div className="sticky-visual">
+        <div className="sticky-cluster">
+          <div className="section-heading">
+            <h2>{set.title}</h2>
+            <p>{set.summary}</p>
+          </div>
           <div aria-live="polite" className="mobile-current-critique">
             <strong>{activeStory.title}</strong>
             <p>{activeStory.description}</p>
           </div>
-          <Screenshot
-            active={active}
-            isResolved={isResolved}
-            mode={mode}
-            set={set}
-          />
+          <div className="sticky-visual">
+            <Screenshot
+              active={active}
+              isResolved={isResolved}
+              mode={mode}
+              set={set}
+            />
+          </div>
         </div>
         <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
       </div>
