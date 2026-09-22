@@ -237,7 +237,7 @@ button:focus-visible {
 .sticky-visual {
   grid-area: media;
   position: sticky;
-  top: max(16px, 2vh);
+  top: max(72px, 10vh);
   align-self: start;
   min-width: 0;
 }
@@ -345,13 +345,13 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding-bottom: 50vh;
+  padding-bottom: 24vh;
 }
 
 .critique-item {
   display: block;
   width: 100%;
-  min-height: clamp(340px, 58vh, 560px);
+  min-height: clamp(120px, 18vh, 160px);
   padding: 0 0 10px;
   text-align: left;
   background: none;
@@ -360,7 +360,7 @@ button:focus-visible {
 }
 
 .critique-item.resolution-step {
-  min-height: clamp(420px, 68vh, 640px);
+  min-height: clamp(180px, 26vh, 240px);
   padding-top: 16px;
 }
 
@@ -576,7 +576,7 @@ footer > p {
 
   .sticky-visual {
     position: sticky;
-    top: 12px;
+    top: max(56px, 8vh);
     order: 2;
     z-index: 2;
   }
@@ -594,7 +594,7 @@ footer > p {
 
   .critique-list {
     order: 4;
-    padding-bottom: 30svh;
+    padding-bottom: 24svh;
   }
 
   .media-panel {
@@ -624,14 +624,14 @@ footer > p {
   }
 
   .critique-item {
-    min-height: max(640px, 95svh);
-    padding: 0;
+    min-height: clamp(140px, 22vh, 180px);
+    padding: 0 0 10px;
     visibility: hidden;
     pointer-events: none;
   }
 
   .critique-item.resolution-step {
-    min-height: max(780px, 120svh);
+    min-height: clamp(200px, 30vh, 260px);
   }
 }
 
