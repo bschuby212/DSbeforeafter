@@ -1,5 +1,8 @@
 import {
   Check,
+  Eye,
+  Layers3,
+  Route,
   Sparkles,
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -8,7 +11,6 @@ import './styles.css'
 type Critique = {
   title: string
   description: string
-  label: string
   highlight: { x: number; y: number; width: number; height: number }
 }
 
@@ -53,21 +55,18 @@ const critiqueSets: CritiqueSet[] = [
     },
     critiques: [
       {
-        label: 'Visual hierarchy',
         title: 'Weak visual hierarchy',
         description:
           'Important content and actions compete for attention, making the page difficult to scan.',
         highlight: { x: 19, y: 24, width: 63, height: 31 },
       },
       {
-        label: 'Prioritization',
         title: 'Poor content prioritization',
         description:
           'Critical resources, actions, and workflows lack emphasis, reducing efficiency.',
         highlight: { x: 23, y: 37, width: 53, height: 19 },
       },
       {
-        label: 'Cognitive load',
         title: 'High cognitive load',
         description:
           'Dense content and minimal prioritization force users to process too much information at once.',
@@ -96,21 +95,18 @@ const critiqueSets: CritiqueSet[] = [
     },
     critiques: [
       {
-        label: 'Information density',
         title: 'Information overload',
         description:
           'Large component lists create a cluttered experience that is difficult to scan and navigate.',
         highlight: { x: 14, y: 28, width: 72, height: 59 },
       },
       {
-        label: 'Wayfinding',
         title: 'Limited guidance and feedback',
         description:
           'Interaction states, active context, and user progress are not clearly communicated.',
         highlight: { x: 68, y: 14, width: 19, height: 21 },
       },
       {
-        label: 'Visual structure',
         title: 'Weak visual structure',
         description:
           'Inconsistent emphasis and static layouts make important information harder to find.',
@@ -138,21 +134,18 @@ const critiqueSets: CritiqueSet[] = [
     },
     critiques: [
       {
-        label: 'Organization',
         title: 'Disorganized structure',
         description:
           'Components are grouped inconsistently, making variations and relationships difficult to understand.',
         highlight: { x: 12, y: 22, width: 12, height: 53 },
       },
       {
-        label: 'Guidance',
         title: 'Limited guidance and feedback',
         description:
           'Basic examples are provided, but clear usage recommendations and best practices are missing.',
         highlight: { x: 25, y: 29, width: 61, height: 49 },
       },
       {
-        label: 'Navigation',
         title: 'Inefficient navigation',
         description:
           'Missing in-page navigation and persistent UI elements make documentation harder to browse.',
@@ -161,6 +154,8 @@ const critiqueSets: CritiqueSet[] = [
     ],
   },
 ]
+
+const critiqueIcons = [Eye, Layers3, Route]
 
 function Screenshot({
   set,
@@ -187,14 +182,31 @@ function Screenshot({
           <div className="mockup-viewport vizient-viewport">
             {mode === 'before'
               ? (
-                <img
-                  alt=""
-                  className="vizient-screen"
-                  decoding="async"
-                  height="672"
-                  src={set.beforeSrc}
-                  width="1008"
-                />
+                <div className="vizient-crop">
+                  <img
+                    alt=""
+                    className="vizient-screen"
+                    decoding="async"
+                    height="672"
+                    src={set.beforeSrc}
+                    width="1008"
+                  />
+                  {!isResolved && (
+                    <>
+                      <div className="screenshot-dim" />
+                      <div
+                        className="focus-window"
+                        key={`${set.id}-${active}`}
+                        style={{
+                          left: `${region.x}%`,
+                          top: `${region.y}%`,
+                          width: `${region.width}%`,
+                          height: `${region.height}%`,
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
               )
               : (
                 <div className="after-placeholder">
@@ -204,23 +216,6 @@ function Screenshot({
                   <small>Final redesigned screen coming next</small>
                 </div>
               )}
-            {mode === 'before' && !isResolved && (
-              <>
-                <div className="screenshot-dim" />
-                <div
-                  className="focus-window"
-                  key={`${set.id}-${active}`}
-                  style={{
-                    left: `${region.x}%`,
-                    top: `${region.y}%`,
-                    width: `${region.width}%`,
-                    height: `${region.height}%`,
-                  }}
-                >
-                  <span>{String(active + 1).padStart(2, '0')}</span>
-                </div>
-              </>
-            )}
             {mode === 'after' && isResolved && (
               <div
                 className={`resolution-note ${set.resolution.notePosition}`}
@@ -269,6 +264,7 @@ function CritiqueList({
   return (
     <div className="critique-list">
       {set.critiques.map((critique, index) => {
+        const Icon = critiqueIcons[index]
         return (
           <button
             aria-label={`Critique ${index + 1} of ${set.critiques.length}: ${critique.title}`}
@@ -280,11 +276,9 @@ function CritiqueList({
             type="button"
           >
             <span className="progress-rail" aria-hidden="true">
-              <i>{String(index + 1).padStart(2, '0')}</i>
-              <b />
+              <i><Icon size={18} strokeWidth={1.7} /></i>
             </span>
             <span className="critique-copy">
-              <span className="critique-label">{critique.label}</span>
               <strong>{critique.title}</strong>
               <span className="critique-description">{critique.description}</span>
             </span>
@@ -300,10 +294,9 @@ function CritiqueList({
         type="button"
       >
         <span className="progress-rail" aria-hidden="true">
-          <i><Check size={12} /></i>
+          <i><Check size={18} strokeWidth={1.7} /></i>
         </span>
         <span className="critique-copy">
-          <span className="critique-label">Outcome</span>
           <strong>{set.resolution.title}</strong>
           <span className="critique-description">{set.resolution.description}</span>
         </span>
@@ -331,11 +324,6 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
       <div className="critique-layout">
         <div className="sticky-visual">
           <div aria-live="polite" className="mobile-current-critique">
-            <span>
-              {isResolved
-                ? <><Check size={12} /> The resolution</>
-                : <>{String(active + 1).padStart(2, '0')} · {set.critiques[active].label}</>}
-            </span>
             <strong>{activeStory.title}</strong>
             <p>{activeStory.description}</p>
           </div>

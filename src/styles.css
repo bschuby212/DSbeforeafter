@@ -11,9 +11,9 @@
   --soft: #92969d;
   --line: #dedfdd;
   --surface: #ffffff;
-  --blue: #242424;
-  --blue-soft: rgba(25, 25, 25, 0.06);
-  --blue-line: rgba(25, 25, 25, 0.55);
+  --blue: #1769ff;
+  --blue-soft: rgba(23, 105, 255, 0.08);
+  --blue-line: rgba(23, 105, 255, 0.52);
 }
 
 * {
@@ -214,18 +214,18 @@ button:focus-visible {
 
 .section-heading > p {
   max-width: 610px;
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   color: var(--muted);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
 .section-heading h2 {
   margin: 0;
-  font-size: clamp(38px, 4.5vw, 60px);
-  font-weight: 520;
-  letter-spacing: -0.055em;
-  line-height: 1;
+  font-size: 24px;
+  font-weight: 560;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
 }
 
 .critique-layout {
@@ -379,6 +379,13 @@ button:focus-visible {
   object-fit: cover;
 }
 
+.vizient-crop {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.28);
+  transform-origin: center;
+}
+
 .after-placeholder {
   position: absolute;
   inset: 0;
@@ -442,31 +449,14 @@ button:focus-visible {
 .focus-window {
   position: absolute;
   z-index: 5;
-  background: rgba(25, 25, 25, 0.025);
+  background: rgba(23, 105, 255, 0.035);
   border: 1px solid var(--blue-line);
   border-radius: 6px;
   box-shadow:
     0 0 0 999px rgba(245, 247, 250, 0.08),
-    0 0 0 3px rgba(25, 25, 25, 0.04);
+    0 0 0 3px rgba(23, 105, 255, 0.04);
   animation: focus-in 360ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
-}
-
-.focus-window > span {
-  position: absolute;
-  top: -9px;
-  right: -8px;
-  display: grid;
-  width: 18px;
-  height: 18px;
-  place-items: center;
-  color: #fff;
-  background: var(--blue);
-  border: 2px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(25, 25, 25, 0.18);
-  font-size: 6px;
-  font-weight: 650;
 }
 
 .resolution-note {
@@ -558,9 +548,8 @@ button:focus-visible {
 
 .progress-rail {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  height: calc(100% + 44px);
+  height: 28px;
 }
 
 .progress-rail i {
@@ -569,35 +558,18 @@ button:focus-visible {
   width: 24px;
   height: 24px;
   place-items: center;
-  color: #9a9a9a;
+  color: #a0a3a8;
   border: 0;
   border-radius: 0;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 520;
-  letter-spacing: -0.01em;
-  transition: color 240ms ease, border-color 240ms ease, background 240ms ease, box-shadow 240ms ease;
-}
-
-.progress-rail b {
-  width: 1px;
-  height: 100%;
-  margin-top: 8px;
-  background: linear-gradient(to bottom, #d4d5d5 60%, transparent);
-  transform-origin: top;
-  transition: background 240ms ease;
+  transition: color 240ms ease, transform 240ms ease;
 }
 
 .critique-item.active .progress-rail i {
-  color: var(--ink);
+  color: var(--blue);
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  font-weight: 650;
-}
-
-.critique-item.active .progress-rail b {
-  background: linear-gradient(to bottom, var(--blue) 15%, #d4d5d5 55%, transparent);
+  transform: translateY(-1px);
 }
 
 .critique-copy {
@@ -615,17 +587,6 @@ button:focus-visible {
 
 .critique-item:not(.active) .critique-copy > strong {
   color: #4f5359;
-}
-
-.critique-label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 13px;
-  color: #717171;
-  font-size: 14px;
-  font-weight: 520;
-  letter-spacing: -0.01em;
 }
 
 .critique-copy > strong {
@@ -655,7 +616,6 @@ button:focus-visible {
   transition: opacity 180ms ease;
 }
 
-.critique-item:not(.active) .critique-label,
 .critique-item:not(.active) .critique-link {
   color: #929292;
 }
@@ -820,7 +780,7 @@ footer > p {
   .mobile-current-critique {
     display: flex;
     flex-direction: column;
-    min-height: 150px;
+    min-height: 128px;
     padding: 18px 20px 16px;
     background: rgba(254, 254, 254, 0.96);
     border: 1px solid var(--line);
@@ -829,18 +789,8 @@ footer > p {
     backdrop-filter: blur(14px);
   }
 
-  .mobile-current-critique > span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--blue);
-    font-size: 14px;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-  }
-
   .mobile-current-critique > strong {
-    margin-top: 10px;
+    margin-top: 0;
     font-size: 21px;
     font-weight: 570;
     letter-spacing: -0.035em;
@@ -946,7 +896,7 @@ footer > p {
   }
 
   .mobile-current-critique {
-    min-height: 158px;
+    min-height: 136px;
     padding: 15px 16px 14px;
   }
 
