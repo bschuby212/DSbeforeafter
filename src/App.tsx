@@ -327,12 +327,15 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
     }
 
     updateOffset()
-    const observer = new ResizeObserver(updateOffset)
-    observer.observe(heading)
     window.addEventListener('resize', updateOffset)
 
+    const observer = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(updateOffset)
+    observer?.observe(heading)
+
     return () => {
-      observer.disconnect()
+      observer?.disconnect()
       window.removeEventListener('resize', updateOffset)
     }
   }, [set.summary, set.title])
