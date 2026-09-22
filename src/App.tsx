@@ -328,30 +328,43 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
     const list = listRef.current
     if (!section || !heading || !list) return
 
+    let frame = 0
     const syncMediaHeight = () => {
       const items = list.querySelectorAll<HTMLElement>('.critique-item')
       const lastPoint = items[items.length - 1]
-      if (!lastPoint) return
+      const media = section.querySelector<HTMLElement>('.sticky-visual')
+      if (!lastPoint || !media) return
 
-      // Use heading top as the shared media origin so sticky offset does not
-      // skew the height. Bottom of grey panel = last point bottom + 16px.
+      // Anchor to the media's rendered top (sticky inset can sit below the
+      // heading on first paint) so the grey bottom lands at last point + 16px.
       const height = lastPoint.getBoundingClientRect().bottom
-        - heading.getBoundingClientRect().top
+        - media.getBoundingClientRect().top
         + 16
-      section.style.setProperty('--media-height', `${Math.max(Math.round(height), 240)}px`)
+      section.style.setProperty('--media-height', `${Math.max(Math.round(height), 120)}px`)
+    }
+
+    const onScrollOrResize = () => {
+      if (frame) return
+      frame = window.requestAnimationFrame(() => {
+        frame = 0
+        syncMediaHeight()
+      })
     }
 
     syncMediaHeight()
     const observer = typeof ResizeObserver === 'undefined'
       ? null
-      : new ResizeObserver(syncMediaHeight)
+      : new ResizeObserver(onScrollOrResize)
     observer?.observe(heading)
     observer?.observe(list)
-    window.addEventListener('resize', syncMediaHeight)
+    window.addEventListener('scroll', onScrollOrResize, { passive: true })
+    window.addEventListener('resize', onScrollOrResize)
 
     return () => {
+      if (frame) window.cancelAnimationFrame(frame)
       observer?.disconnect()
-      window.removeEventListener('resize', syncMediaHeight)
+      window.removeEventListener('scroll', onScrollOrResize)
+      window.removeEventListener('resize', onScrollOrResize)
     }
   }, [active, set.id])
 
