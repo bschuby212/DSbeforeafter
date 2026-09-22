@@ -1,11 +1,8 @@
 import {
   Check,
-  Eye,
-  Layers3,
-  Route,
   Sparkles,
 } from 'lucide-react'
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import './styles.css'
 
 type Critique = {
@@ -24,7 +21,6 @@ type CritiqueSet = {
     title: string
     description: string
   }
-  reverse?: boolean
   critiques: Critique[]
   resolution: {
     title: string
@@ -83,7 +79,6 @@ const critiqueSets: CritiqueSet[] = [
       title: 'A more navigable library is next.',
       description: 'The redesigned component library will be added here when the final screen is ready.',
     },
-    reverse: true,
     resolution: {
       title: "It's better",
       reasons: [
@@ -153,8 +148,6 @@ const critiqueSets: CritiqueSet[] = [
   },
 ]
 
-const critiqueIcons = [Eye, Layers3, Route]
-
 function Screenshot({
   set,
   active,
@@ -175,43 +168,41 @@ function Screenshot({
         aria-label={mode === 'before'
           ? `${set.screenAlt}. Current issue: ${critique.title}`
           : `After redesign preview for ${set.title}`}
-        className={`screenshot-shell is-${mode}`}
+        className={`media-panel is-${mode}`}
         role="img"
       >
-        <div aria-hidden="true">
-          <div className="mockup-viewport vizient-viewport">
-            {mode === 'before'
-              ? (
-                <div className="vizient-crop">
-                  <img
-                    alt=""
-                    className="vizient-screen"
-                    decoding="async"
-                    height="672"
-                    src={set.beforeSrc}
-                    width="1008"
-                  />
-                  {!isResolved && (
-                    <>
-                      <div className="screenshot-dim" />
-                      <div
-                        className="focus-window"
-                        key={`${set.id}-${active}`}
-                        style={{
-                          left: `${region.x}%`,
-                          top: `${region.y}%`,
-                          width: `${region.width}%`,
-                          height: `${region.height}%`,
-                        }}
-                      />
-                    </>
-                  )}
-                </div>
-              )
-              : (
-                <div className="after-placeholder" />
-              )}
-          </div>
+        <div aria-hidden="true" className="media-panel-inner">
+          {mode === 'before'
+            ? (
+              <div className="media-shot">
+                <img
+                  alt=""
+                  className="vizient-screen"
+                  decoding="async"
+                  height="672"
+                  src={set.beforeSrc}
+                  width="1008"
+                />
+                {!isResolved && (
+                  <>
+                    <div className="screenshot-dim" />
+                    <div
+                      className="focus-window"
+                      key={`${set.id}-${active}`}
+                      style={{
+                        left: `${region.x}%`,
+                        top: `${region.y}%`,
+                        width: `${region.width}%`,
+                        height: `${region.height}%`,
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+            )
+            : (
+              <div className="after-placeholder" />
+            )}
         </div>
       </div>
     </div>
@@ -249,29 +240,22 @@ function CritiqueList({
 
   return (
     <div className="critique-list">
-      {set.critiques.map((critique, index) => {
-        const Icon = critiqueIcons[index]
-        return (
-          <button
-            aria-label={`Critique ${index + 1} of ${set.critiques.length}: ${critique.title}`}
-            aria-pressed={active === index}
-            className={`critique-item ${active === index ? 'active' : ''}`}
-            key={critique.title}
-            onClick={() => onActiveChange(index)}
-            ref={(element) => { itemRefs.current[index] = element }}
-            type="button"
-          >
-            <span className="progress-rail" aria-hidden="true">
-              <i><Icon size={18} strokeWidth={1.7} /></i>
-              <b className={active > index ? 'complete' : ''} />
-            </span>
-            <span className="critique-copy">
-              <strong>{critique.title}</strong>
-              <span className="critique-description">{critique.description}</span>
-            </span>
-          </button>
-        )
-      })}
+      {set.critiques.map((critique, index) => (
+        <button
+          aria-label={`Critique ${index + 1} of ${set.critiques.length}: ${critique.title}`}
+          aria-pressed={active === index}
+          className={`critique-item ${active === index ? 'active' : ''}`}
+          key={critique.title}
+          onClick={() => onActiveChange(index)}
+          ref={(element) => { itemRefs.current[index] = element }}
+          type="button"
+        >
+          <span className="critique-copy">
+            <strong>{critique.title}</strong>
+            <span className="critique-description">{critique.description}</span>
+          </span>
+        </button>
+      ))}
       <button
         aria-label={`Resolution: ${set.resolution.title}`}
         aria-pressed={active === set.critiques.length}
@@ -280,7 +264,6 @@ function CritiqueList({
         ref={(element) => { itemRefs.current[set.critiques.length] = element }}
         type="button"
       >
-        <span className="progress-rail resolution-rail" aria-hidden="true" />
         <span className="critique-copy resolution-stack">
           <strong>{set.resolution.title}</strong>
           <span className="resolution-reasons">
@@ -302,8 +285,6 @@ function CritiqueList({
 function CritiqueSection({ set }: { set: CritiqueSet }) {
   const [active, setActive] = useState(0)
   const [mode, setMode] = useState<'before' | 'after'>('before')
-  const [listOffset, setListOffset] = useState(0)
-  const headingRef = useRef<HTMLDivElement | null>(null)
   const handleActiveChange = useCallback((index: number) => {
     setActive(index)
     setMode(index === set.critiques.length ? 'after' : 'before')
@@ -316,60 +297,32 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
       }
     : set.critiques[active]
 
-  useLayoutEffect(() => {
-    const heading = headingRef.current
-    if (!heading) return
-
-    const updateOffset = () => {
-      const styles = getComputedStyle(heading)
-      const marginBottom = Number.parseFloat(styles.marginBottom) || 0
-      setListOffset(heading.offsetHeight + marginBottom)
-    }
-
-    updateOffset()
-    window.addEventListener('resize', updateOffset)
-
-    const observer = typeof ResizeObserver === 'undefined'
-      ? null
-      : new ResizeObserver(updateOffset)
-    observer?.observe(heading)
-
-    return () => {
-      observer?.disconnect()
-      window.removeEventListener('resize', updateOffset)
-    }
-  }, [set.summary, set.title])
-
   return (
-    <section className={`critique-section ${set.reverse ? 'reverse' : ''}`} id={set.id}>
+    <section className="critique-section" id={set.id}>
       <div className="critique-layout">
-        <div className="sticky-cluster">
-          <div className="section-heading" ref={headingRef}>
-            <h2>{set.title}</h2>
-            <p>{set.summary}</p>
-          </div>
-          <div
-            aria-live="polite"
-            className={`mobile-current-critique ${isResolved ? 'is-resolved' : ''}`}
-          >
-            {!isResolved && (
-              <>
-                <strong>{activeStory.title}</strong>
-                <p>{activeStory.description}</p>
-              </>
-            )}
-          </div>
-          <div className="sticky-visual">
-            <Screenshot
-              active={active}
-              isResolved={isResolved}
-              mode={mode}
-              set={set}
-            />
-          </div>
+        <div className="section-heading">
+          <h2>{set.title}</h2>
+          <p>{set.summary}</p>
         </div>
-        <div className="critique-column" style={{ paddingTop: listOffset }}>
-          <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
+        <div
+          aria-live="polite"
+          className={`mobile-current-critique ${isResolved ? 'is-resolved' : ''}`}
+        >
+          {!isResolved && (
+            <>
+              <strong>{activeStory.title}</strong>
+              <p>{activeStory.description}</p>
+            </>
+          )}
+        </div>
+        <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
+        <div className="sticky-visual">
+          <Screenshot
+            active={active}
+            isResolved={isResolved}
+            mode={mode}
+            set={set}
+          />
         </div>
       </div>
     </section>
