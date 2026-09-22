@@ -232,26 +232,12 @@ function CritiqueList({
     if (elements.length === 0) return
 
     const updateActive = () => {
-      const activationLine = window.innerHeight * 0.32
-      const firstTop = elements[0].getBoundingClientRect().top
-
-      // Keep the first point active until it has moved past the activation line.
-      if (firstTop > activationLine - 8) {
-        if (activeRef.current !== 0) onActiveChange(0)
-        return
-      }
-
+      const activationLine = window.innerHeight * 0.36
       let bestIndex = 0
-      let bestDistance = Number.POSITIVE_INFINITY
 
       elements.forEach((element, index) => {
-        const rect = element.getBoundingClientRect()
-        if (rect.bottom < activationLine - 48 || rect.top > activationLine + 160) return
-        const distance = Math.abs(rect.top - activationLine)
-        if (distance < bestDistance) {
-          bestDistance = distance
-          bestIndex = index
-        }
+        const top = element.getBoundingClientRect().top
+        if (top <= activationLine) bestIndex = index
       })
 
       if (activeRef.current !== bestIndex) onActiveChange(bestIndex)
