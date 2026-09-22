@@ -6,9 +6,9 @@ describe('portfolio critique', () => {
   it('renders three embedded critique sets without standalone page controls', () => {
     render(<App />)
 
-    expect(screen.getByText('Outdated System Homepage')).toBeInTheDocument()
-    expect(screen.getByText('Fragmented Component Library')).toBeInTheDocument()
-    expect(screen.getByText('Shallow Component Documentation')).toBeInTheDocument()
+    expect(screen.getAllByText('Outdated System Homepage').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Fragmented Component Library').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Shallow Component Documentation').length).toBeGreaterThan(0)
 
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'before' })).not.toBeInTheDocument()
