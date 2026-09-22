@@ -657,7 +657,7 @@ button:focus-visible {
 
 .critique-item:not(.active) .critique-label,
 .critique-item:not(.active) .critique-link {
-  color: #4d668f;
+  color: #929292;
 }
 
 .critique-item.active .critique-link,
@@ -787,6 +787,7 @@ footer > p {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     gap: 0;
+    padding-top: clamp(140px, 20svh, 180px);
   }
 
   .sticky-visual,
@@ -835,8 +836,7 @@ footer > p {
     color: var(--blue);
     font-size: 14px;
     font-weight: 650;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
+    letter-spacing: -0.01em;
   }
 
   .mobile-current-critique > strong {
