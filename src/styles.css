@@ -437,7 +437,7 @@ button:focus-visible {
 }
 
 .resolution-reasons {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 14px;
   margin-top: 0;
@@ -447,6 +447,7 @@ button:focus-visible {
 }
 
 .critique-item.resolution-step.active .resolution-reasons {
+  display: flex;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
