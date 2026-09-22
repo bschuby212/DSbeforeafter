@@ -3,6 +3,7 @@ import {
   Eye,
   Layers3,
   Route,
+  Sparkles,
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './styles.css'
@@ -27,8 +28,7 @@ type CritiqueSet = {
   critiques: Critique[]
   resolution: {
     title: string
-    description: string
-    note: string
+    reasons: [string, string]
   }
 }
 
@@ -45,10 +45,11 @@ const critiqueSets: CritiqueSet[] = [
       description: 'The redesigned homepage will be added here when the final screen is ready.',
     },
     resolution: {
-      title: 'A clearer entry point.',
-      description:
-        'The redesign direction prioritizes key resources, clearer paths, and faster orientation.',
-      note: 'Stronger hierarchy · clearer paths · less cognitive load',
+      title: "It's better",
+      reasons: [
+        'Key resources and actions are easier to find at a glance.',
+        'Clearer paths reduce the amount of information users have to parse.',
+      ],
     },
     critiques: [
       {
@@ -84,10 +85,11 @@ const critiqueSets: CritiqueSet[] = [
     },
     reverse: true,
     resolution: {
-      title: 'A library built for discovery.',
-      description:
-        'The redesign direction introduces stronger grouping, visible context, and faster component discovery.',
-      note: 'Clear groups · visible context · faster discovery',
+      title: "It's better",
+      reasons: [
+        'Components are grouped with enough context to compare options quickly.',
+        'Wayfinding and feedback make discovery feel intentional instead of noisy.',
+      ],
     },
     critiques: [
       {
@@ -122,10 +124,11 @@ const critiqueSets: CritiqueSet[] = [
       description: 'The redesigned component documentation will be added here when the final screen is ready.',
     },
     resolution: {
-      title: 'Guidance that supports decisions.',
-      description:
-        'The redesign direction makes component relationships, recommendations, and navigation easier to understand.',
-      note: 'Clear structure · practical guidance · efficient navigation',
+      title: "It's better",
+      reasons: [
+        'Structure and recommendations help teams decide how to use a component.',
+        'Navigation stays available so documentation is easier to browse in place.',
+      ],
     },
     critiques: [
       {
@@ -281,11 +284,18 @@ function CritiqueList({
         <span className="progress-rail" aria-hidden="true">
           <i><Check size={18} strokeWidth={1.7} /></i>
         </span>
-        <span className="critique-copy resolution-callout">
-          <span className="resolution-kicker">Better with redesign</span>
+        <span className="critique-copy resolution-stack">
           <strong>{set.resolution.title}</strong>
-          <span className="critique-description">{set.resolution.description}</span>
-          <span className="resolution-outcome">{set.resolution.note}</span>
+          <span className="resolution-reasons">
+            <span>
+              <Check size={16} strokeWidth={1.7} />
+              <span>{set.resolution.reasons[0]}</span>
+            </span>
+            <span>
+              <Sparkles size={16} strokeWidth={1.7} />
+              <span>{set.resolution.reasons[1]}</span>
+            </span>
+          </span>
         </span>
       </button>
     </div>
@@ -300,7 +310,12 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
     setMode(index === set.critiques.length ? 'after' : 'before')
   }, [set.critiques.length])
   const isResolved = active === set.critiques.length
-  const activeStory = isResolved ? set.resolution : set.critiques[active]
+  const activeStory = isResolved
+    ? {
+        title: set.resolution.title,
+        description: set.resolution.reasons.join(' '),
+      }
+    : set.critiques[active]
 
   return (
     <section className={`critique-section ${set.reverse ? 'reverse' : ''}`} id={set.id}>

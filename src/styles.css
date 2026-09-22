@@ -212,7 +212,7 @@ button:focus-visible {
   top: 0;
   z-index: 5;
   max-width: 680px;
-  margin-bottom: clamp(28px, 3vw, 40px);
+  margin-bottom: clamp(56px, 6vw, 84px);
   padding: 18px 0 16px;
   background: linear-gradient(180deg, #fefefe 70%, rgba(254, 254, 254, 0.92) 100%);
 }
@@ -489,29 +489,41 @@ button:focus-visible {
   padding-top: 12px;
 }
 
-.resolution-callout {
+.critique-item.resolution-step.active .progress-rail i {
+  color: #191919;
+}
+
+.resolution-stack {
   max-width: 420px;
-  padding: 18px 18px 18px 16px;
-  background: rgba(23, 105, 255, 0.04);
-  border: 1px solid rgba(23, 105, 255, 0.14);
-  border-left: 3px solid var(--blue);
-  border-radius: 14px;
 }
 
-.resolution-kicker {
-  margin-bottom: 10px;
-  color: var(--blue);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+.resolution-stack > strong {
+  color: #191919;
+  font-size: 20px;
+  font-weight: 500;
 }
 
-.resolution-outcome {
-  margin-top: 14px;
-  color: #3a3f46;
+.resolution-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.resolution-reasons > span {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 12px;
+  align-items: start;
+  color: #5f6369;
   font-size: 14px;
-  font-weight: 540;
-  line-height: 1.45;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.resolution-reasons > span > svg {
+  margin-top: 2px;
+  color: #8a8f96;
 }
 
 .progress-rail {
@@ -589,7 +601,7 @@ button:focus-visible {
 .critique-copy > strong {
   max-width: 380px;
   font-size: 20px;
-  font-weight: 540;
+  font-weight: 500;
   letter-spacing: -0.035em;
   line-height: 1.18;
 }

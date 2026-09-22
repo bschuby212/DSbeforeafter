@@ -19,11 +19,11 @@ describe('portfolio critique', () => {
       name: /Legacy Vizient UX\/UI Toolkit homepage/,
     })).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'Resolution: A clearer entry point.',
-    }))
+    fireEvent.click(screen.getAllByRole('button', {
+      name: "Resolution: It's better",
+    })[0])
 
     expect(screen.getByText('A clearer starting point is next.')).toBeInTheDocument()
-    expect(screen.getByText('Stronger hierarchy · clearer paths · less cognitive load')).toBeInTheDocument()
+    expect(screen.getByText('Key resources and actions are easier to find at a glance.')).toBeInTheDocument()
   })
 })
