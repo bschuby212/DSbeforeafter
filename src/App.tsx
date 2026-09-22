@@ -172,7 +172,9 @@ function Screenshot({
   return (
     <div className="visual-wrap">
       <div
-        aria-label={`${mode === 'before' ? set.screenAlt : `After redesign placeholder for ${set.title}`}. ${mode === 'before' ? `Current issue: ${critique.title}` : set.afterPlaceholder.description}`}
+        aria-label={mode === 'before'
+          ? `${set.screenAlt}. Current issue: ${critique.title}`
+          : `After redesign preview for ${set.title}`}
         className={`screenshot-shell is-${mode}`}
         role="img"
       >
@@ -207,10 +209,7 @@ function Screenshot({
                 </div>
               )
               : (
-                <div className="after-placeholder">
-                  <strong>{set.afterPlaceholder.title}</strong>
-                  <p>{set.afterPlaceholder.description}</p>
-                </div>
+                <div className="after-placeholder" />
               )}
           </div>
         </div>
@@ -281,9 +280,7 @@ function CritiqueList({
         ref={(element) => { itemRefs.current[set.critiques.length] = element }}
         type="button"
       >
-        <span className="progress-rail" aria-hidden="true">
-          <i><Check size={18} strokeWidth={1.7} /></i>
-        </span>
+        <span className="progress-rail resolution-rail" aria-hidden="true" />
         <span className="critique-copy resolution-stack">
           <strong>{set.resolution.title}</strong>
           <span className="resolution-reasons">
@@ -325,9 +322,16 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
             <h2>{set.title}</h2>
             <p>{set.summary}</p>
           </div>
-          <div aria-live="polite" className="mobile-current-critique">
-            <strong>{activeStory.title}</strong>
-            <p>{activeStory.description}</p>
+          <div
+            aria-live="polite"
+            className={`mobile-current-critique ${isResolved ? 'is-resolved' : ''}`}
+          >
+            {!isResolved && (
+              <>
+                <strong>{activeStory.title}</strong>
+                <p>{activeStory.description}</p>
+              </>
+            )}
           </div>
           <div className="sticky-visual">
             <Screenshot
@@ -338,7 +342,13 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
             />
           </div>
         </div>
-        <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
+        <div className="critique-column">
+          <div aria-hidden="true" className="section-heading section-heading-spacer">
+            <h2>{set.title}</h2>
+            <p>{set.summary}</p>
+          </div>
+          <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
+        </div>
       </div>
     </section>
   )

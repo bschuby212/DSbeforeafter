@@ -23,7 +23,8 @@ describe('portfolio critique', () => {
       name: "Resolution: It's better",
     })[0])
 
-    expect(screen.getByText('A clearer starting point is next.')).toBeInTheDocument()
     expect(screen.getByText('Key resources and actions are easier to find at a glance.')).toBeInTheDocument()
+    expect(document.querySelector('.after-placeholder')).toBeTruthy()
+    expect(document.querySelector('.after-placeholder')?.textContent?.trim()).toBe('')
   })
 })
