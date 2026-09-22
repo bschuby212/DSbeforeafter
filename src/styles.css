@@ -549,7 +549,7 @@ button:focus-visible {
 .progress-rail {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   align-self: stretch;
   height: auto;
 }
@@ -571,7 +571,7 @@ button:focus-visible {
 .progress-rail b {
   position: absolute;
   top: 28px;
-  bottom: -7px;
+  bottom: -51px;
   left: 50%;
   width: 1px;
   overflow: hidden;
