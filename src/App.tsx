@@ -24,7 +24,13 @@ type CritiqueSet = {
   summary: string
   beforeCaption: string
   afterCaption: string
-  mockup: 'insights' | 'checkout'
+  beforeSrc: string
+  screenAlt: string
+  browserLabel: string
+  afterPlaceholder: {
+    title: string
+    description: string
+  }
   reverse?: boolean
   critiques: Critique[]
   resolution: {
@@ -37,198 +43,154 @@ type CritiqueSet = {
 
 const critiqueSets: CritiqueSet[] = [
   {
-    id: 'focus',
-    eyebrow: 'Set 01 · Analytics',
-    title: 'Make the important thing obvious.',
+    id: 'homepage',
+    eyebrow: 'Screen 01 · Entry point',
+    title: 'Outdated System Homepage',
     summary:
-      'A dashboard can show everything and still communicate nothing. This redesign creates a clear path from signal to action.',
-    beforeCaption: 'Useful data, without a point of view',
-    afterCaption: 'A focused narrative with clear next steps',
-    mockup: 'insights',
+      'The homepage acted as the primary entry point, but struggled to surface key resources and guide users effectively.',
+    beforeCaption: 'Legacy toolkit homepage',
+    afterCaption: 'Redesigned homepage · preview pending',
+    beforeSrc: '/vizient/outdated-system-homepage.png',
+    screenAlt: 'Legacy Vizient UX/UI Toolkit homepage',
+    browserLabel: 'Vizient UX/UI Toolkit & Style Guide',
+    afterPlaceholder: {
+      title: 'A clearer starting point is next.',
+      description: 'The redesigned homepage will be added here when the final screen is ready.',
+    },
     resolution: {
-      title: 'One story, from signal to action.',
+      title: 'A clearer entry point.',
       description:
-        'The new hierarchy connects the key outcome, its context, and one useful next step.',
-      note: 'Clear priority · useful context · direct action',
+        'The redesign direction prioritizes key resources, clearer paths, and faster orientation.',
+      note: 'Stronger hierarchy · clearer paths · less cognitive load',
       notePosition: 'right',
     },
     critiques: [
       {
-        label: 'Hierarchy',
-        title: 'Lead with the decision, not the data.',
+        label: 'Visual hierarchy',
+        title: 'Weak visual hierarchy',
         description:
-          'The original header gave every metric equal weight. The redesign elevates the outcome that needs attention and moves supporting context into a quieter second layer.',
+          'Important content and actions compete for attention, making the page difficult to scan.',
         icon: Eye,
-        highlight: { x: 4, y: 10, width: 60, height: 22 },
+        highlight: { x: 19, y: 24, width: 63, height: 31 },
       },
       {
-        label: 'Context',
-        title: 'Make change understandable at a glance.',
+        label: 'Prioritization',
+        title: 'Poor content prioritization',
         description:
-          'A number without context creates work for the reader. A compact trend treatment now explains direction, magnitude, and timeframe in one scan.',
+          'Critical resources, actions, and workflows lack emphasis, reducing efficiency.',
         icon: Sparkles,
-        highlight: { x: 67, y: 10, width: 29, height: 22 },
+        highlight: { x: 23, y: 37, width: 53, height: 19 },
       },
       {
-        label: 'Focus',
-        title: 'Let the chart answer one question.',
+        label: 'Cognitive load',
+        title: 'High cognitive load',
         description:
-          'Competing series and persistent controls obscured the pattern. Reducing visual noise makes the critical drop visible before the user starts exploring.',
-        icon: Eye,
-        highlight: { x: 4, y: 36, width: 64, height: 43 },
-      },
-      {
-        label: 'Action',
-        title: 'Connect the insight to a next step.',
-        description:
-          'The redesigned recommendation panel turns observation into momentum. It explains why the signal matters and offers one clear, contextual action.',
-        icon: ArrowRight,
-        highlight: { x: 71, y: 36, width: 25, height: 43 },
+          'Dense content and minimal prioritization force users to process too much information at once.',
+        icon: MousePointer2,
+        highlight: { x: 20, y: 58, width: 61, height: 23 },
       },
     ],
   },
   {
-    id: 'flow',
-    eyebrow: 'Set 02 · Checkout',
-    title: 'Reduce uncertainty at every step.',
+    id: 'component-library',
+    eyebrow: 'Screen 02 · Discovery',
+    title: 'Fragmented Component Library',
     summary:
-      'Checkout friction is rarely one dramatic failure. It is the accumulation of small questions the interface leaves unanswered.',
-    beforeCaption: 'A dense form with hidden expectations',
-    afterCaption: 'A guided flow that builds confidence',
-    mockup: 'checkout',
+      'As the library expanded, inconsistent organization made components harder to discover and compare.',
+    beforeCaption: 'Legacy component library',
+    afterCaption: 'Redesigned library · preview pending',
+    beforeSrc: '/vizient/fragmented-component-library.png',
+    screenAlt: 'Legacy Vizient component library index',
+    browserLabel: 'Vizient Design System',
+    afterPlaceholder: {
+      title: 'A more navigable library is next.',
+      description: 'The redesigned component library will be added here when the final screen is ready.',
+    },
     reverse: true,
     resolution: {
-      title: 'Confidence before commitment.',
+      title: 'A library built for discovery.',
       description:
-        'Progress, grouped inputs, and visible costs now answer questions before they become friction.',
-      note: 'Known progress · lower effort · no surprises',
+        'The redesign direction introduces stronger grouping, visible context, and faster component discovery.',
+      note: 'Clear groups · visible context · faster discovery',
       notePosition: 'left',
     },
     critiques: [
       {
-        label: 'Orientation',
-        title: 'Set expectations before asking for effort.',
+        label: 'Information density',
+        title: 'Information overload',
         description:
-          'A lightweight progress marker shows where customers are, what remains, and how close they are to completion—without turning the flow into a wizard.',
+          'Large component lists create a cluttered experience that is difficult to scan and navigate.',
         icon: Eye,
-        highlight: { x: 8, y: 7, width: 84, height: 12 },
+        highlight: { x: 14, y: 28, width: 72, height: 59 },
       },
       {
-        label: 'Comprehension',
-        title: 'Group inputs around how people think.',
+        label: 'Wayfinding',
+        title: 'Limited guidance and feedback',
         description:
-          'The form now follows a natural mental model: contact, delivery, then payment. Clear grouping lowers the effort required to understand what belongs where.',
+          'Interaction states, active context, and user progress are not clearly communicated.',
         icon: MousePointer2,
-        highlight: { x: 8, y: 23, width: 53, height: 57 },
+        highlight: { x: 68, y: 14, width: 19, height: 21 },
       },
       {
-        label: 'Reassurance',
-        title: 'Answer the cost question early.',
+        label: 'Visual structure',
+        title: 'Weak visual structure',
         description:
-          'The order summary stays visible and explains delivery, discounts, and total cost before commitment. No surprises are deferred to the final click.',
+          'Inconsistent emphasis and static layouts make important information harder to find.',
         icon: Check,
-        highlight: { x: 64, y: 23, width: 28, height: 40 },
+        highlight: { x: 19, y: 31, width: 64, height: 52 },
+      },
+    ],
+  },
+  {
+    id: 'component-documentation',
+    eyebrow: 'Screen 03 · Guidance',
+    title: 'Shallow Component Documentation',
+    summary:
+      'Component pages provided examples and specifications, but offered limited guidance on usage, behavior, and best practices.',
+    beforeCaption: 'Legacy component documentation',
+    afterCaption: 'Redesigned documentation · preview pending',
+    beforeSrc: '/vizient/shallow-component-documentation.png',
+    screenAlt: 'Legacy Vizient Button component documentation',
+    browserLabel: 'Vizient UX/UI Toolkit & Style Guide',
+    afterPlaceholder: {
+      title: 'Deeper documentation is next.',
+      description: 'The redesigned component documentation will be added here when the final screen is ready.',
+    },
+    resolution: {
+      title: 'Guidance that supports decisions.',
+      description:
+        'The redesign direction makes component relationships, recommendations, and navigation easier to understand.',
+      note: 'Clear structure · practical guidance · efficient navigation',
+      notePosition: 'right',
+    },
+    critiques: [
+      {
+        label: 'Organization',
+        title: 'Disorganized structure',
+        description:
+          'Components are grouped inconsistently, making variations and relationships difficult to understand.',
+        icon: Sparkles,
+        highlight: { x: 12, y: 22, width: 12, height: 53 },
       },
       {
-        label: 'Commitment',
-        title: 'Make the final action feel safe.',
+        label: 'Guidance',
+        title: 'Limited guidance and feedback',
         description:
-          'Specific button language and nearby reassurance clarify exactly what happens next. Confidence replaces the generic, high-friction “Continue” label.',
+          'Basic examples are provided, but clear usage recommendations and best practices are missing.',
+        icon: Eye,
+        highlight: { x: 25, y: 29, width: 61, height: 49 },
+      },
+      {
+        label: 'Navigation',
+        title: 'Inefficient navigation',
+        description:
+          'Missing in-page navigation and persistent UI elements make documentation harder to browse.',
         icon: ArrowRight,
-        highlight: { x: 64, y: 67, width: 28, height: 13 },
+        highlight: { x: 12, y: 17, width: 76, height: 62 },
       },
     ],
   },
 ]
-
-function InsightsMockup({ mode }: { mode: 'before' | 'after' }) {
-  return (
-    <div aria-hidden="true" className={`product-ui insights-ui ${mode}`}>
-      <aside className="mock-sidebar" aria-hidden="true">
-        <span className="mock-logo">n</span>
-        <span />
-        <span />
-        <span />
-        <span className="sidebar-bottom" />
-      </aside>
-      <div className="mock-workspace">
-        <header className="mock-topbar">
-          <div>
-            <small>Overview</small>
-            <strong>Product insights</strong>
-          </div>
-          <div className="avatar-row"><i /><i /><b>Share</b></div>
-        </header>
-        <section className="metric-row">
-          <div className="primary-metric">
-            <small>{mode === 'after' ? 'Activation this month' : 'Total activation'}</small>
-            <strong>{mode === 'after' ? '68.4%' : '18,492'}</strong>
-            <span>{mode === 'after' ? '↑ 8.2% from last month' : 'All workspaces'}</span>
-          </div>
-          <div className="secondary-metric">
-            <small>Week over week</small>
-            <strong>{mode === 'after' ? '+12.8%' : '6.72%'}</strong>
-            <span>{mode === 'after' ? 'Strongest since May' : 'View report'}</span>
-          </div>
-        </section>
-        <section className="chart-card">
-          <div className="chart-title">
-            <span><strong>{mode === 'after' ? 'Activation trend' : 'Workspace overview'}</strong><small>Last 30 days</small></span>
-            <b>Monthly⌄</b>
-          </div>
-          <div className="chart-grid">
-            <div className="chart-bars" aria-hidden="true">
-              {[42, 57, 51, 68, 62, 78, 49, 54, 38, 66, 73, 82].map((height, index) => (
-                <i key={`bar-${index}`} style={{ height: `${mode === 'after' && index > 7 ? height - 18 : height}%` }} />
-              ))}
-            </div>
-          </div>
-        </section>
-        <section className="insight-card">
-          <span className="insight-icon"><Sparkles size={12} /></span>
-          <div><small>{mode === 'after' ? 'Opportunity found' : 'Latest update'}</small><strong>{mode === 'after' ? 'Shorten the invite step' : 'Weekly report is ready'}</strong></div>
-          <ArrowRight size={12} />
-        </section>
-      </div>
-    </div>
-  )
-}
-
-function CheckoutMockup({ mode }: { mode: 'before' | 'after' }) {
-  return (
-    <div aria-hidden="true" className={`product-ui checkout-ui ${mode}`}>
-      <header className="shop-header">
-        <strong>Northstar</strong>
-        <span>Secure checkout</span>
-      </header>
-      <div className="checkout-progress">
-        <span className="complete"><i><Check size={8} /></i>Cart</span>
-        <b />
-        <span className="current"><i>2</i>Details</span>
-        <b />
-        <span><i>3</i>Confirm</span>
-      </div>
-      <div className="checkout-columns">
-        <section className="form-panel">
-          <div className="form-heading"><small>Step 2 of 3</small><strong>Delivery details</strong></div>
-          <div className="field"><span>Email address</span><i>alex@north.co</i></div>
-          <div className="field-row"><div className="field"><span>First name</span><i>Alex</i></div><div className="field"><span>Last name</span><i>Morgan</i></div></div>
-          <div className="field"><span>Address</span><i>1428 Franklin Street</i></div>
-          <div className="field-row"><div className="field"><span>City</span><i>San Francisco</i></div><div className="field small"><span>ZIP code</span><i>94109</i></div></div>
-        </section>
-        <aside className="order-panel">
-          <small>Your order</small>
-          <div className="order-product"><i /><span><strong>Everyday carry</strong><small>Sand · 1 item</small></span><b>$128</b></div>
-          <div className="order-line"><span>Subtotal</span><b>$128</b></div>
-          <div className="order-line"><span>Shipping</span><b>{mode === 'after' ? 'Free' : '—'}</b></div>
-          <div className="order-total"><span>Total</span><strong>$128</strong></div>
-          <div className="mock-action">{mode === 'after' ? 'Review order' : 'Continue'} <ArrowRight size={11} /></div>
-          <p><Check size={9} /> No charge until you confirm</p>
-        </aside>
-      </div>
-    </div>
-  )
-}
 
 function Screenshot({
   set,
@@ -265,20 +227,36 @@ function Screenshot({
         <span aria-live="polite">{mode === 'before' ? set.beforeCaption : set.afterCaption}</span>
       </div>
       <div
-        aria-label={`${mode === 'before' ? 'Before design' : 'After design'} for ${set.title}. ${mode === 'before' ? `Current issue: ${critique.title}` : `${set.afterCaption}. ${isResolved ? set.resolution.description : ''}`}.`}
+        aria-label={`${mode === 'before' ? set.screenAlt : `After redesign placeholder for ${set.title}`}. ${mode === 'before' ? `Current issue: ${critique.title}` : set.afterPlaceholder.description}`}
         className={`screenshot-shell is-${mode}`}
         role="img"
       >
         <div aria-hidden="true">
           <div className="browser-bar">
             <span><i /><i /><i /></span>
-            <b>northstar.app</b>
+            <b>{set.browserLabel}</b>
             <i />
           </div>
-          <div className="mockup-viewport">
-            {set.mockup === 'insights'
-              ? <InsightsMockup mode={mode} />
-              : <CheckoutMockup mode={mode} />}
+          <div className="mockup-viewport vizient-viewport">
+            {mode === 'before'
+              ? (
+                <img
+                  alt=""
+                  className="vizient-screen"
+                  decoding="async"
+                  height="672"
+                  src={set.beforeSrc}
+                  width="1008"
+                />
+              )
+              : (
+                <div className="after-placeholder">
+                  <span><Sparkles size={16} /> Redesign preview</span>
+                  <strong>{set.afterPlaceholder.title}</strong>
+                  <p>{set.afterPlaceholder.description}</p>
+                  <small>Final redesigned screen coming next</small>
+                </div>
+              )}
             {mode === 'before' && !isResolved && (
               <>
                 <div className="screenshot-dim" />
@@ -301,7 +279,7 @@ function Screenshot({
                 className={`resolution-note ${set.resolution.notePosition}`}
                 key={`${set.id}-resolution`}
               >
-                <span><Check size={11} /> Why it works</span>
+                <span><Check size={11} /> Design direction</span>
                 <strong>{set.resolution.note}</strong>
               </div>
             )}
@@ -311,10 +289,10 @@ function Screenshot({
       <p className="visual-hint">
         <MousePointer2 size={13} />
         {isResolved && mode === 'after'
-          ? 'New design · the resolution stays in view as the story concludes'
+          ? 'Redesign direction · final product screen coming next'
           : mode === 'before'
-          ? 'Blue marks the current issue · Switch to After to see the resolution'
-          : 'Resolution shown · Switch to Before to continue the critique'}
+          ? 'Blue marks the current issue · Switch to After to preview the redesign direction'
+          : 'Preview shown · Switch to Before to continue the critique'}
       </p>
     </div>
   )
@@ -446,7 +424,7 @@ export default function App() {
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Return to top">A<span>—</span>M</a>
         <nav aria-label="Primary navigation">
-          <a href="#focus">Work</a>
+          <a href="#homepage">Work</a>
           <a href="#principles">Approach</a>
           <a className="contact-link" href="mailto:hello@example.com">Let’s talk <ArrowRight size={14} /></a>
         </nav>
@@ -458,7 +436,7 @@ export default function App() {
           <h1>Good design makes the next step feel inevitable.</h1>
           <div className="hero-footer">
             <p>I untangle complex product experiences and turn them into clear, confident moments for the people using them.</p>
-            <a href="#focus">Explore the work <ArrowDown size={15} /></a>
+            <a href="#homepage">Explore the work <ArrowDown size={15} /></a>
           </div>
           <div className="hero-proof" aria-label="Areas of expertise">
             <span>Product strategy</span><i />
