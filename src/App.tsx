@@ -3,7 +3,6 @@ import {
   Eye,
   Layers3,
   Route,
-  Sparkles,
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './styles.css'
@@ -30,7 +29,6 @@ type CritiqueSet = {
     title: string
     description: string
     note: string
-    notePosition: 'left' | 'right'
   }
 }
 
@@ -51,7 +49,6 @@ const critiqueSets: CritiqueSet[] = [
       description:
         'The redesign direction prioritizes key resources, clearer paths, and faster orientation.',
       note: 'Stronger hierarchy · clearer paths · less cognitive load',
-      notePosition: 'right',
     },
     critiques: [
       {
@@ -91,7 +88,6 @@ const critiqueSets: CritiqueSet[] = [
       description:
         'The redesign direction introduces stronger grouping, visible context, and faster component discovery.',
       note: 'Clear groups · visible context · faster discovery',
-      notePosition: 'left',
     },
     critiques: [
       {
@@ -130,7 +126,6 @@ const critiqueSets: CritiqueSet[] = [
       description:
         'The redesign direction makes component relationships, recommendations, and navigation easier to understand.',
       note: 'Clear structure · practical guidance · efficient navigation',
-      notePosition: 'right',
     },
     critiques: [
       {
@@ -210,21 +205,10 @@ function Screenshot({
               )
               : (
                 <div className="after-placeholder">
-                  <span><Sparkles size={16} /> Redesign preview</span>
                   <strong>{set.afterPlaceholder.title}</strong>
                   <p>{set.afterPlaceholder.description}</p>
-                  <small>Final redesigned screen coming next</small>
                 </div>
               )}
-            {mode === 'after' && isResolved && (
-              <div
-                className={`resolution-note ${set.resolution.notePosition}`}
-                key={`${set.id}-resolution`}
-              >
-                <span><Check size={11} /> Design direction</span>
-                <strong>{set.resolution.note}</strong>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -297,9 +281,11 @@ function CritiqueList({
         <span className="progress-rail" aria-hidden="true">
           <i><Check size={18} strokeWidth={1.7} /></i>
         </span>
-        <span className="critique-copy">
+        <span className="critique-copy resolution-callout">
+          <span className="resolution-kicker">Better with redesign</span>
           <strong>{set.resolution.title}</strong>
           <span className="critique-description">{set.resolution.description}</span>
+          <span className="resolution-outcome">{set.resolution.note}</span>
         </span>
       </button>
     </div>
