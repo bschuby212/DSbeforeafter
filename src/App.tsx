@@ -220,7 +220,10 @@ function CritiqueList({
 }) {
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const activeRef = useRef(active)
-  activeRef.current = active
+
+  useEffect(() => {
+    activeRef.current = active
+  }, [active])
 
   useEffect(() => {
     const elements = itemRefs.current.filter(
