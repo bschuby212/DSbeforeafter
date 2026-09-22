@@ -277,6 +277,7 @@ function CritiqueList({
           >
             <span className="progress-rail" aria-hidden="true">
               <i><Icon size={18} strokeWidth={1.7} /></i>
+              <b className={active > index ? 'complete' : ''} />
             </span>
             <span className="critique-copy">
               <strong>{critique.title}</strong>

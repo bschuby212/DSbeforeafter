@@ -547,12 +547,16 @@ button:focus-visible {
 }
 
 .progress-rail {
+  position: relative;
   display: flex;
   align-items: center;
-  height: 28px;
+  align-self: stretch;
+  height: auto;
 }
 
 .progress-rail i {
+  position: relative;
+  z-index: 1;
   display: grid;
   flex: 0 0 auto;
   width: 24px;
@@ -562,6 +566,31 @@ button:focus-visible {
   border: 0;
   border-radius: 0;
   transition: color 240ms ease, transform 240ms ease;
+}
+
+.progress-rail b {
+  position: absolute;
+  top: 28px;
+  bottom: -7px;
+  left: 50%;
+  width: 1px;
+  overflow: hidden;
+  background: #dedede;
+  transform: translateX(-50%);
+}
+
+.progress-rail b::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: var(--blue);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progress-rail b.complete::after {
+  transform: scaleY(1);
 }
 
 .critique-item.active .progress-rail i {
@@ -591,7 +620,7 @@ button:focus-visible {
 
 .critique-copy > strong {
   max-width: 380px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 540;
   letter-spacing: -0.035em;
   line-height: 1.18;
@@ -791,7 +820,7 @@ footer > p {
 
   .mobile-current-critique > strong {
     margin-top: 0;
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 570;
     letter-spacing: -0.035em;
     line-height: 1.18;
@@ -898,10 +927,6 @@ footer > p {
   .mobile-current-critique {
     min-height: 136px;
     padding: 15px 16px 14px;
-  }
-
-  .mobile-current-critique > strong {
-    font-size: 19px;
   }
 
   .mobile-current-critique > p {
