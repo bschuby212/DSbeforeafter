@@ -232,11 +232,16 @@ function CritiqueList({
     if (elements.length === 0) return
 
     const updateActive = () => {
+      if (window.innerHeight < 120) return
+
+      const tops = elements.map((element) => element.getBoundingClientRect().top)
+      const uniqueTops = new Set(tops.map((top) => Math.round(top)))
+      // Ignore collapsed/jsdom layouts where every item shares one top.
+      if (uniqueTops.size === 1 && elements.length > 1) return
+
       const activationLine = window.innerHeight * 0.36
       let bestIndex = 0
-
-      elements.forEach((element, index) => {
-        const top = element.getBoundingClientRect().top
+      tops.forEach((top, index) => {
         if (top <= activationLine) bestIndex = index
       })
 
@@ -301,6 +306,8 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
   const [active, setActive] = useState(0)
   const [mode, setMode] = useState<'before' | 'after'>('before')
   const sectionRef = useRef<HTMLElement | null>(null)
+  const headingRef = useRef<HTMLDivElement | null>(null)
+  const listRef = useRef<HTMLDivElement | null>(null)
   const handleActiveChange = useCallback((index: number) => {
     setActive(index)
     setMode(index === set.critiques.length ? 'after' : 'before')
@@ -315,27 +322,35 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
 
   useEffect(() => {
     const section = sectionRef.current
-    if (!section) return
+    const heading = headingRef.current
+    const list = listRef.current
+    if (!section || !heading || !list) return
 
-    const onWheel = (event: WheelEvent) => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-      const rect = section.getBoundingClientRect()
-      const inView = rect.top < window.innerHeight && rect.bottom > 0
-      if (!inView) return
-      if (Math.abs(event.deltaY) < 0.5) return
-
-      event.preventDefault()
-      window.scrollBy({ top: event.deltaY * 0.42, left: 0 })
+    const syncMediaHeight = () => {
+      const headingStyles = getComputedStyle(heading)
+      const marginBottom = Number.parseFloat(headingStyles.marginBottom) || 0
+      const height = heading.offsetHeight + marginBottom + list.offsetHeight + 16
+      section.style.setProperty('--media-height', `${Math.max(height, 240)}px`)
     }
 
-    section.addEventListener('wheel', onWheel, { passive: false })
-    return () => section.removeEventListener('wheel', onWheel)
-  }, [])
+    syncMediaHeight()
+    const observer = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(syncMediaHeight)
+    observer?.observe(heading)
+    observer?.observe(list)
+    window.addEventListener('resize', syncMediaHeight)
+
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', syncMediaHeight)
+    }
+  }, [active, set.id])
 
   return (
     <section className="critique-section" id={set.id} ref={sectionRef}>
       <div className="critique-layout">
-        <div className="section-heading">
+        <div className="section-heading" ref={headingRef}>
           <h2>{set.title}</h2>
           <p>{set.summary}</p>
         </div>
@@ -350,7 +365,9 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
             </>
           )}
         </div>
-        <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
+        <div className="critique-list-wrap" ref={listRef}>
+          <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
+        </div>
         <div className="sticky-visual">
           <Screenshot
             active={active}

@@ -222,7 +222,7 @@ button:focus-visible {
 .section-heading {
   grid-area: heading;
   max-width: 480px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .mobile-current-critique {
@@ -230,8 +230,9 @@ button:focus-visible {
   display: none;
 }
 
-.critique-list {
+.critique-list-wrap {
   grid-area: list;
+  min-width: 0;
 }
 
 .sticky-visual {
@@ -240,6 +241,7 @@ button:focus-visible {
   top: max(72px, 10vh);
   align-self: start;
   min-width: 0;
+  height: var(--media-height, auto);
 }
 
 .section-heading > p {
@@ -262,13 +264,15 @@ button:focus-visible {
 
 .visual-wrap {
   min-width: 0;
+  height: 100%;
 }
 
 .media-panel {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: min(88vh, 820px);
+  height: 100%;
+  min-height: 0;
   padding: 0;
   overflow: hidden;
   background: #e8e8e8;
@@ -346,7 +350,7 @@ button:focus-visible {
   flex-direction: column;
   gap: 16px;
   min-width: 0;
-  padding-bottom: 28vh;
+  padding-bottom: 0;
 }
 
 .critique-item {
@@ -431,7 +435,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 18px;
+  margin-top: 24px;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -610,7 +614,7 @@ footer > p {
 
   .section-heading {
     order: 1;
-    margin-bottom: 0;
+    margin-bottom: 24px;
   }
 
   .sticky-visual {
@@ -618,6 +622,7 @@ footer > p {
     top: max(56px, 8vh);
     order: 2;
     z-index: 2;
+    height: var(--media-height, auto);
   }
 
   .mobile-current-critique {
@@ -631,13 +636,17 @@ footer > p {
     border-radius: 12px;
   }
 
-  .critique-list {
+  .critique-list-wrap {
     order: 4;
-    padding-bottom: 24svh;
+  }
+
+  .critique-list {
+    padding-bottom: 0;
   }
 
   .media-panel {
-    min-height: min(52vh, 420px);
+    height: 100%;
+    min-height: 0;
     padding: 0;
     border-radius: 18px;
   }
