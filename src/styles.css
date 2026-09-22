@@ -212,12 +212,6 @@ button:focus-visible {
   margin-bottom: clamp(56px, 6vw, 84px);
 }
 
-.section-heading-spacer {
-  visibility: hidden;
-  pointer-events: none;
-  user-select: none;
-}
-
 .critique-column {
   min-width: 0;
 }
@@ -776,9 +770,6 @@ footer > p {
     min-width: 0;
   }
 
-  .section-heading-spacer {
-    display: none;
-  }
 
   .sticky-cluster,
   .reverse .sticky-cluster {

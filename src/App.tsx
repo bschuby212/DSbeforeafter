@@ -5,7 +5,7 @@ import {
   Route,
   Sparkles,
 } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './styles.css'
 
 type Critique = {
@@ -302,6 +302,8 @@ function CritiqueList({
 function CritiqueSection({ set }: { set: CritiqueSet }) {
   const [active, setActive] = useState(0)
   const [mode, setMode] = useState<'before' | 'after'>('before')
+  const [listOffset, setListOffset] = useState(0)
+  const headingRef = useRef<HTMLDivElement | null>(null)
   const handleActiveChange = useCallback((index: number) => {
     setActive(index)
     setMode(index === set.critiques.length ? 'after' : 'before')
@@ -314,11 +316,32 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
       }
     : set.critiques[active]
 
+  useLayoutEffect(() => {
+    const heading = headingRef.current
+    if (!heading) return
+
+    const updateOffset = () => {
+      const styles = getComputedStyle(heading)
+      const marginBottom = Number.parseFloat(styles.marginBottom) || 0
+      setListOffset(heading.offsetHeight + marginBottom)
+    }
+
+    updateOffset()
+    const observer = new ResizeObserver(updateOffset)
+    observer.observe(heading)
+    window.addEventListener('resize', updateOffset)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', updateOffset)
+    }
+  }, [set.summary, set.title])
+
   return (
     <section className={`critique-section ${set.reverse ? 'reverse' : ''}`} id={set.id}>
       <div className="critique-layout">
         <div className="sticky-cluster">
-          <div className="section-heading">
+          <div className="section-heading" ref={headingRef}>
             <h2>{set.title}</h2>
             <p>{set.summary}</p>
           </div>
@@ -342,11 +365,7 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
             />
           </div>
         </div>
-        <div className="critique-column">
-          <div aria-hidden="true" className="section-heading section-heading-spacer">
-            <h2>{set.title}</h2>
-            <p>{set.summary}</p>
-          </div>
+        <div className="critique-column" style={{ paddingTop: listOffset }}>
           <CritiqueList set={set} active={active} onActiveChange={handleActiveChange} />
         </div>
       </div>
