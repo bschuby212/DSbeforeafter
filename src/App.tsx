@@ -219,24 +219,50 @@ function CritiqueList({
   onActiveChange: (index: number) => void
 }) {
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const activeRef = useRef(active)
+  activeRef.current = active
 
   useEffect(() => {
     const elements = itemRefs.current.filter(
       (element): element is HTMLButtonElement => element !== null,
     )
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const activeEntry = entries.find((entry) => entry.isIntersecting)
-        if (!activeEntry) return
-        const index = elements.indexOf(activeEntry.target as HTMLButtonElement)
-        if (index >= 0) onActiveChange(index)
-      },
-      { rootMargin: '-38% 0px -61% 0px', threshold: 0 },
-    )
-    elements.forEach((element) => observer.observe(element))
+    if (elements.length === 0) return
 
-    return () => observer.disconnect()
-  }, [onActiveChange])
+    const updateActive = () => {
+      const activationLine = window.innerHeight * 0.32
+      const firstTop = elements[0].getBoundingClientRect().top
+
+      // Keep the first point active until it has moved past the activation line.
+      if (firstTop > activationLine - 8) {
+        if (activeRef.current !== 0) onActiveChange(0)
+        return
+      }
+
+      let bestIndex = 0
+      let bestDistance = Number.POSITIVE_INFINITY
+
+      elements.forEach((element, index) => {
+        const rect = element.getBoundingClientRect()
+        if (rect.bottom < activationLine - 48 || rect.top > activationLine + 160) return
+        const distance = Math.abs(rect.top - activationLine)
+        if (distance < bestDistance) {
+          bestDistance = distance
+          bestIndex = index
+        }
+      })
+
+      if (activeRef.current !== bestIndex) onActiveChange(bestIndex)
+    }
+
+    updateActive()
+    window.addEventListener('scroll', updateActive, { passive: true })
+    window.addEventListener('resize', updateActive)
+
+    return () => {
+      window.removeEventListener('scroll', updateActive)
+      window.removeEventListener('resize', updateActive)
+    }
+  }, [onActiveChange, set.id])
 
   return (
     <div className="critique-list">
@@ -285,6 +311,7 @@ function CritiqueList({
 function CritiqueSection({ set }: { set: CritiqueSet }) {
   const [active, setActive] = useState(0)
   const [mode, setMode] = useState<'before' | 'after'>('before')
+  const sectionRef = useRef<HTMLElement | null>(null)
   const handleActiveChange = useCallback((index: number) => {
     setActive(index)
     setMode(index === set.critiques.length ? 'after' : 'before')
@@ -297,8 +324,27 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
       }
     : set.critiques[active]
 
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const onWheel = (event: WheelEvent) => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const rect = section.getBoundingClientRect()
+      const inView = rect.top < window.innerHeight && rect.bottom > 0
+      if (!inView) return
+      if (Math.abs(event.deltaY) < 0.5) return
+
+      event.preventDefault()
+      window.scrollBy({ top: event.deltaY * 0.42, left: 0 })
+    }
+
+    section.addEventListener('wheel', onWheel, { passive: false })
+    return () => section.removeEventListener('wheel', onWheel)
+  }, [])
+
   return (
-    <section className="critique-section" id={set.id}>
+    <section className="critique-section" id={set.id} ref={sectionRef}>
       <div className="critique-layout">
         <div className="section-heading">
           <h2>{set.title}</h2>
