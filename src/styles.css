@@ -350,9 +350,8 @@ button:focus-visible {
   flex-direction: column;
   gap: 16px;
   min-width: 0;
-  /* Extra runway so sticky progression takes more scroll distance without
-     hijacking the wheel (native feel, paced movement). */
-  padding-bottom: min(32vh, 320px);
+  /* End runway after the last item */
+  padding-bottom: min(24vh, 240px);
 }
 
 .critique-item {
@@ -360,6 +359,8 @@ button:focus-visible {
   width: 100%;
   min-height: 0;
   padding: 0;
+  /* Extra scroll distance per item (native wheel, longer dwell) */
+  padding-bottom: clamp(96px, 16vh, 168px);
   text-align: left;
   background: none;
   border: 0;
@@ -369,11 +370,12 @@ button:focus-visible {
 .critique-item.resolution-step {
   min-height: 0;
   padding-top: 8px;
+  padding-bottom: clamp(80px, 14vh, 140px);
 }
 
 .critique-item.resolution-step:not(.active) {
-  /* Keep a scroll target once the title is hidden until load-in */
-  min-height: 12px;
+  /* Scroll target once the title is hidden until load-in */
+  min-height: clamp(96px, 14vh, 140px);
   padding-top: 0;
 }
 
@@ -678,7 +680,7 @@ footer > p {
   }
 
   .critique-list {
-    padding-bottom: min(28svh, 280px);
+    padding-bottom: min(20svh, 200px);
   }
 
   .media-panel {

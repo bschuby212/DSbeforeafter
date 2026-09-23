@@ -328,45 +328,35 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
     const list = listRef.current
     if (!section || !heading || !list) return
 
-    let frame = 0
     const syncMediaHeight = () => {
-      const items = list.querySelectorAll<HTMLElement>('.critique-item')
-      const lastPoint = items[items.length - 1]
-      const media = section.querySelector<HTMLElement>('.sticky-visual')
-      if (!lastPoint || !media) return
+      const layout = section.querySelector('.critique-layout')
+      const lastCopy = [
+        ...list.querySelectorAll<HTMLElement>('.critique-item:not(.resolution-step) .critique-copy'),
+      ].at(-1)
+      if (!layout || !lastCopy) return
 
-      // Anchor to the media's rendered top (sticky inset can sit below the
-      // heading on first paint) so the grey bottom lands at last point + 16px.
-      const height = lastPoint.getBoundingClientRect().bottom
-        - media.getBoundingClientRect().top
+      // Layout-relative math stays stable while scrolling (unlike media.top,
+      // which sticks). Sized to the last critique copy so the image does not
+      // resize as resolution loads in below in the scroll runway.
+      const height = lastCopy.getBoundingClientRect().bottom
+        - layout.getBoundingClientRect().top
         + 16
-      section.style.setProperty('--media-height', `${Math.max(Math.round(height), 120)}px`)
-    }
-
-    const onScrollOrResize = () => {
-      if (frame) return
-      frame = window.requestAnimationFrame(() => {
-        frame = 0
-        syncMediaHeight()
-      })
+      section.style.setProperty('--media-height', `${Math.max(Math.round(height), 240)}px`)
     }
 
     syncMediaHeight()
     const observer = typeof ResizeObserver === 'undefined'
       ? null
-      : new ResizeObserver(onScrollOrResize)
+      : new ResizeObserver(syncMediaHeight)
     observer?.observe(heading)
     observer?.observe(list)
-    window.addEventListener('scroll', onScrollOrResize, { passive: true })
-    window.addEventListener('resize', onScrollOrResize)
+    window.addEventListener('resize', syncMediaHeight)
 
     return () => {
-      if (frame) window.cancelAnimationFrame(frame)
       observer?.disconnect()
-      window.removeEventListener('scroll', onScrollOrResize)
-      window.removeEventListener('resize', onScrollOrResize)
+      window.removeEventListener('resize', syncMediaHeight)
     }
-  }, [active, set.id])
+  }, [set.id])
 
   return (
     <section className="critique-section" id={set.id} ref={sectionRef}>
