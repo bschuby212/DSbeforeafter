@@ -371,6 +371,12 @@ button:focus-visible {
   padding-top: 8px;
 }
 
+.critique-item.resolution-step:not(.active) {
+  /* Keep a scroll target once the title is hidden until load-in */
+  min-height: 12px;
+  padding-top: 0;
+}
+
 .critique-copy {
   display: flex;
   flex-direction: column;
@@ -378,16 +384,26 @@ button:focus-visible {
   max-width: 440px;
   min-width: 0;
   margin: 0;
-  padding: 10px 12px;
+  /* Inactive: flush with section h2 / body */
+  padding: 0;
   text-align: left;
   border-radius: 0 10px 10px 0;
-  border-left: 3px solid transparent;
-  transition: background 260ms ease, border-color 260ms ease;
+  border-left: 0 solid transparent;
+  box-sizing: border-box;
+  transition:
+    background 260ms ease,
+    border-color 260ms ease,
+    border-width 260ms ease,
+    padding 260ms ease,
+    transform 260ms ease;
 }
 
 .critique-item.active .critique-copy {
   background: #f3f3f3;
-  border-left-color: #d0d0d0;
+  border-left: 3px solid #d0d0d0;
+  /* Active moves further in on X vs flush inactive text */
+  padding: 10px 14px 10px 16px;
+  transform: translateX(8px);
 }
 
 .critique-copy > strong {
@@ -419,21 +435,32 @@ button:focus-visible {
   flex-direction: column;
   gap: 24px;
   max-width: 440px;
-  padding: 4px 0 0;
+  padding: 0;
   background: transparent;
   border-left-color: transparent;
   border-radius: 0;
+  transform: none;
 }
 
 .critique-item.resolution-step.active .critique-copy {
   background: transparent;
   border-left-color: transparent;
+  padding: 0;
+  transform: none;
 }
 
 .resolution-stack > strong {
+  display: none;
   color: #191919;
   font-size: 20px;
   font-weight: 500;
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+
+.critique-item.resolution-step.active .resolution-stack > strong {
+  display: block;
+  animation: reason-bounce 520ms cubic-bezier(0.34, 1.45, 0.64, 1) both;
 }
 
 .resolution-reasons {
@@ -470,8 +497,12 @@ button:focus-visible {
   animation: reason-bounce 520ms cubic-bezier(0.34, 1.45, 0.64, 1) both;
 }
 
-.critique-item.resolution-step.active .resolution-reasons > span:nth-child(2) {
+.critique-item.resolution-step.active .resolution-reasons > span:nth-child(1) {
   animation-delay: 90ms;
+}
+
+.critique-item.resolution-step.active .resolution-reasons > span:nth-child(2) {
+  animation-delay: 180ms;
 }
 
 .resolution-reasons > span > svg {
