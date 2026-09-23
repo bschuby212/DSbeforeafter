@@ -328,34 +328,46 @@ function CritiqueSection({ set }: { set: CritiqueSet }) {
     const list = listRef.current
     if (!section || !heading || !list) return
 
-    const syncMediaHeight = () => {
+    let lockedHeight: number | null = null
+
+    const measureHeight = () => {
       const layout = section.querySelector('.critique-layout')
       const lastCopy = [
         ...list.querySelectorAll<HTMLElement>('.critique-item:not(.resolution-step) .critique-copy'),
       ].at(-1)
-      if (!layout || !lastCopy) return
+      if (!layout || !lastCopy) return null
 
-      // Layout-relative math stays stable while scrolling (unlike media.top,
-      // which sticks). Sized to the last critique copy so the image does not
-      // resize as resolution loads in below in the scroll runway.
-      const height = lastCopy.getBoundingClientRect().bottom
-        - layout.getBoundingClientRect().top
-        + 16
-      section.style.setProperty('--media-height', `${Math.max(Math.round(height), 240)}px`)
+      // Scroll-invariant: both nodes move together in normal flow.
+      return Math.max(
+        Math.round(
+          lastCopy.getBoundingClientRect().bottom
+            - layout.getBoundingClientRect().top
+            + 16,
+        ),
+        240,
+      )
     }
 
-    syncMediaHeight()
-    const observer = typeof ResizeObserver === 'undefined'
-      ? null
-      : new ResizeObserver(syncMediaHeight)
-    observer?.observe(heading)
-    observer?.observe(list)
-    window.addEventListener('resize', syncMediaHeight)
-
-    return () => {
-      observer?.disconnect()
-      window.removeEventListener('resize', syncMediaHeight)
+    const applyHeight = (force = false) => {
+      if (lockedHeight !== null && !force) {
+        section.style.setProperty('--media-height', `${lockedHeight}px`)
+        return
+      }
+      const height = measureHeight()
+      if (height == null) return
+      lockedHeight = height
+      section.style.setProperty('--media-height', `${lockedHeight}px`)
     }
+
+    applyHeight(true)
+
+    const onResize = () => {
+      lockedHeight = null
+      applyHeight(true)
+    }
+
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
   }, [set.id])
 
   return (
