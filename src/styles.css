@@ -108,8 +108,7 @@ figure {
 
 .story__sticky {
   position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
+  top: clamp(4rem, calc(50vh - 16rem), 12rem);
   padding: 3rem 0;
 }
 
