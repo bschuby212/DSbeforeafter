@@ -3,17 +3,17 @@
   <rect x="24" y="24" width="1152" height="752" rx="16" fill="#fbfaf7"/>
   <rect x="24" y="24" width="1152" height="68" rx="16" fill="#212523"/>
   <text x="58" y="67" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#f8f6f0">Metricbox</text>
-  <text x="990" y="64" font-family="Arial,sans-serif" font-size="13" fill="#bbc0bb">May 01  May 30</text><circle cx="1130" cy="58" r="16" fill="#67836f"/>
+  <text x="990" y="64" font-family="Arial,sans-serif" font-size="13" fill="#bbc0bb">May 01  -  May 30</text><circle cx="1130" cy="58" r="16" fill="#67836f"/>
   <g transform="translate(58 126)">
     <text x="0" y="22" font-family="Arial,sans-serif" font-size="13" fill="#71766f">PERFORMANCE OVERVIEW</text>
     <text x="0" y="68" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#252925">Growth is holding steady.</text>
     <text x="0" y="97" font-family="Arial,sans-serif" font-size="15" fill="#72766f">Visitor quality improved while acquisition volume remained stable.</text>
-    <rect x="869" y="38" width="215" height="48" rx="8" fill="#eae7df"/><text x="910" y="68" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#353a35">View detailed report ’</text>
+    <rect x="869" y="38" width="215" height="48" rx="8" fill="#eae7df"/><text x="910" y="68" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#353a35">View detailed report -></text>
   </g>
   <g transform="translate(58 258)">
-    <rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">VISITORS</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">128.4k</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">‘ 4.8%</text>
-    <g transform="translate(250)"><rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">CONVERSION</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">7.42%</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">‘ 0.9%</text></g>
-    <g transform="translate(500)"><rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">RETENTION</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">68%</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">‘ 3.1%</text></g>
+    <rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">VISITORS</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">128.4k</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">up  4.8%</text>
+    <g transform="translate(250)"><rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">CONVERSION</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">7.42%</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">up  0.9%</text></g>
+    <g transform="translate(500)"><rect width="232" height="125" rx="12" fill="#f2efe8" stroke="#ddd9d0"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#747871">RETENTION</text><text x="20" y="78" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="#282d28">68%</text><text x="20" y="105" font-family="Arial,sans-serif" font-size="12" fill="#4d785d">up  3.1%</text></g>
     <g transform="translate(750)"><rect width="334" height="125" rx="12" fill="#2b332e"/><text x="20" y="32" font-family="Arial,sans-serif" font-size="12" fill="#b4bdb6">KEY SIGNAL</text><text x="20" y="69" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fbfaf7">Organic is your strongest channel</text><text x="20" y="96" font-family="Arial,sans-serif" font-size="12" fill="#c7cec8">42% of high-intent traffic</text></g>
   </g>
   <g transform="translate(58 420)">
