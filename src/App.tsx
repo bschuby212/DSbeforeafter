@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
 type Highlight = {
@@ -440,7 +440,20 @@ export default function App() {
   return (
     <main>
       {critiqueSets.map((set, index) => (
-        <BeforeAfterStory set={set} setIndex={index} key={set.title} />
+        <Fragment key={set.title}>
+          {index === 1 && (
+            <section
+              className="chapter-transition"
+              aria-labelledby="chapter-transition-title"
+            >
+              <p className="eyebrow">Next chapter</p>
+              <h2 id="chapter-transition-title">
+                From navigating work to understanding outcomes.
+              </h2>
+            </section>
+          )}
+          <BeforeAfterStory set={set} setIndex={index} />
+        </Fragment>
       ))}
 
       <footer className="page-footer">

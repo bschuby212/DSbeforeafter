@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600&display=swap');
 
 :root {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Geist', sans-serif;
   color: #1d1e1b;
   background: #f3f1ec;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --ink: #1d1e1b;
   --muted: #666762;
-  --accent: #ca5639;
+  --accent: #2563eb;
 }
 
 * {
@@ -45,7 +45,7 @@ figure {
 .image-stage__caption,
 .critique-copy__number,
 .page-footer {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Geist Mono', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -64,6 +64,25 @@ figure {
 
 .story + .story {
   padding-top: 22rem;
+}
+
+.chapter-transition {
+  min-height: 76svh;
+  max-width: 100rem;
+  margin: 0 auto;
+  padding: 8rem clamp(1.5rem, 6vw, 6rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chapter-transition h2 {
+  max-width: 15ch;
+  margin-top: 1.6rem;
+  font-size: clamp(3rem, 6.7vw, 7.2rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
 }
 
 .story__header {
@@ -194,11 +213,11 @@ figure {
   position: absolute;
   border: 1.5px solid rgba(255, 255, 255, 0.95);
   border-radius: 0.42rem;
-  background: rgba(202, 86, 57, 0.16);
+  background: rgba(37, 99, 235, 0.16);
   box-shadow:
     0 0 0 999px rgba(13, 15, 14, 0.44),
-    0 0 0 1px rgba(202, 86, 57, 0.85),
-    0 0 2.4rem rgba(202, 86, 57, 0.35);
+    0 0 0 1px rgba(37, 99, 235, 0.85),
+    0 0 2.4rem rgba(37, 99, 235, 0.35);
   animation: highlight-in 368ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -254,7 +273,7 @@ figure {
   justify-content: center;
   margin-bottom: 1.6rem;
   border-radius: 50%;
-  background: rgba(202, 86, 57, 0.1);
+  background: rgba(37, 99, 235, 0.1);
   color: var(--accent);
 }
 
@@ -335,6 +354,12 @@ figure {
     padding-top: 12rem;
   }
 
+  .chapter-transition {
+    min-height: 66svh;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+
   .story__header {
     display: block;
     padding-bottom: 4rem;
@@ -392,6 +417,7 @@ figure {
 
 @media (max-width: 480px) {
   .story,
+  .chapter-transition,
   .page-footer {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
