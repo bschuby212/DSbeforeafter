@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 
 type Highlight = {
   top: string
@@ -9,10 +10,23 @@ type Highlight = {
 
 type Critique = {
   id: string
+  icon: IconName
   title: string
   description: string
   highlight: Highlight
 }
+
+type IconName =
+  | 'compass'
+  | 'layers'
+  | 'cursor'
+  | 'grid'
+  | 'feedback'
+  | 'route'
+  | 'signal'
+  | 'compare'
+  | 'chart'
+  | 'link'
 
 type CritiqueSet = {
   eyebrow: string
@@ -38,6 +52,7 @@ const critiqueSets: CritiqueSet[] = [
     critiques: [
       {
         id: '01',
+        icon: 'compass',
         title: 'Competing points of entry',
         description:
           'Too many elements ask for attention at once, leaving people without a clear place to begin.',
@@ -45,6 +60,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '02',
+        icon: 'layers',
         title: 'Hierarchy gets lost',
         description:
           'Primary and supporting information carry similar visual weight, making the page harder to scan.',
@@ -52,6 +68,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '03',
+        icon: 'cursor',
         title: 'Actions lack context',
         description:
           'Controls sit apart from the content they affect, increasing hesitation and the chance of error.',
@@ -59,6 +76,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '04',
+        icon: 'grid',
         title: 'Dense information blocks',
         description:
           'Tight spacing and weak grouping make routine comparison feel like careful inspection.',
@@ -66,6 +84,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '05',
+        icon: 'feedback',
         title: 'Feedback arrives too late',
         description:
           'Status is understated and distant from the task, so progress is easy to overlook.',
@@ -85,6 +104,7 @@ const critiqueSets: CritiqueSet[] = [
     critiques: [
       {
         id: '01',
+        icon: 'route',
         title: 'The next step is unclear',
         description:
           'Navigation describes destinations, but offers little guidance about the intended sequence.',
@@ -92,6 +112,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '02',
+        icon: 'signal',
         title: 'Key signals are buried',
         description:
           'High-value metrics blend into surrounding detail instead of helping people orient quickly.',
@@ -99,6 +120,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '03',
+        icon: 'compare',
         title: 'Comparisons require memory',
         description:
           'Related values are separated across modules, forcing people to remember what they just saw.',
@@ -106,6 +128,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '04',
+        icon: 'chart',
         title: 'Patterns are hard to read',
         description:
           'The visualization adds density without enough structure, obscuring the story in the data.',
@@ -113,6 +136,7 @@ const critiqueSets: CritiqueSet[] = [
       },
       {
         id: '05',
+        icon: 'link',
         title: 'Details feel disconnected',
         description:
           'Supporting context is isolated from the main analysis, creating unnecessary back-and-forth.',
@@ -121,6 +145,83 @@ const critiqueSets: CritiqueSet[] = [
     ],
   },
 ]
+
+function CritiqueIcon({ name }: { name: IconName }) {
+  const paths: Record<IconName, ReactNode> = {
+    compass: (
+      <>
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="m15.2 8.8-2 4.4-4.4 2 2-4.4 4.4-2Z" />
+      </>
+    ),
+    layers: (
+      <>
+        <path d="m12 4 8 4-8 4-8-4 8-4Z" />
+        <path d="m4 12 8 4 8-4M4 16l8 4 8-4" />
+      </>
+    ),
+    cursor: (
+      <>
+        <path d="m5 3 6.8 16 2.1-6.1L20 10.8 5 3Z" />
+        <path d="m14 14 4 4" />
+      </>
+    ),
+    grid: (
+      <>
+        <rect x="4" y="4" width="6" height="6" rx="1" />
+        <rect x="14" y="4" width="6" height="6" rx="1" />
+        <rect x="4" y="14" width="6" height="6" rx="1" />
+        <rect x="14" y="14" width="6" height="6" rx="1" />
+      </>
+    ),
+    feedback: (
+      <>
+        <path d="M18 9a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" />
+        <path d="M10 20h4" />
+      </>
+    ),
+    route: (
+      <>
+        <circle cx="6" cy="18" r="2" />
+        <circle cx="18" cy="6" r="2" />
+        <path d="M8 18h3a3 3 0 0 0 3-3v-6a3 3 0 0 1 3-3" />
+      </>
+    ),
+    signal: (
+      <>
+        <path d="M4 18v-3M9 18v-7M14 18V8M19 18V4" />
+      </>
+    ),
+    compare: (
+      <>
+        <rect x="4" y="5" width="6" height="14" rx="1" />
+        <rect x="14" y="8" width="6" height="11" rx="1" />
+        <path d="M7 9h0M17 12h0" />
+      </>
+    ),
+    chart: (
+      <>
+        <path d="M4 19V5M4 19h16" />
+        <path d="m7 15 4-5 3 3 5-7" />
+      </>
+    ),
+    link: (
+      <>
+        <path d="m9.5 14.5 5-5" />
+        <path d="M7.5 16.5 6 18a3.5 3.5 0 0 1-5-5l3-3a3.5 3.5 0 0 1 5 0" />
+        <path d="m16.5 7.5 1.5-1.5a3.5 3.5 0 0 1 5 5l-3 3a3.5 3.5 0 0 1-5 0" />
+      </>
+    ),
+  }
+
+  return (
+    <span className="critique-copy__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        {paths[name]}
+      </svg>
+    </span>
+  )
+}
 
 function ImageStage({
   set,
@@ -198,6 +299,7 @@ function MobileCritique({
       <div className="critique-copy is-active">
         <span className="critique-copy__number">{critique.id}</span>
         <div>
+          <CritiqueIcon name={critique.icon} />
           <h3>{critique.title}</h3>
           <p>{critique.description}</p>
         </div>
@@ -276,6 +378,7 @@ function BeforeAfterStory({
               >
                 <span className="critique-copy__number">{critique.id}</span>
                 <div>
+                  <CritiqueIcon name={critique.icon} />
                   <h3>{critique.title}</h3>
                   <p>{critique.description}</p>
                 </div>
@@ -336,19 +439,6 @@ function BeforeAfterStory({
 export default function App() {
   return (
     <main>
-      <header className="page-intro">
-        <p className="eyebrow">Before & after · UX critique</p>
-        <h1>Breaking down the old experience</h1>
-        <p className="page-intro__lede">
-          Before refining the interface, we slowed down to understand where the
-          experience was asking too much of its users.
-        </p>
-        <div className="scroll-cue" aria-hidden="true">
-          <span>Scroll to explore</span>
-          <span className="scroll-cue__line" />
-        </div>
-      </header>
-
       {critiqueSets.map((set, index) => (
         <BeforeAfterStory set={set} setIndex={index} key={set.title} />
       ))}
