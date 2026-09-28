@@ -204,7 +204,7 @@ figure {
 
 .critique-copy {
   display: grid;
-  grid-template-columns: 2.6rem 1fr;
+  grid-template-columns: 32px 1fr;
   gap: 1.1rem;
   align-items: start;
   padding: 1.1rem 0;
@@ -416,13 +416,13 @@ figure {
   }
 
   .critique-copy {
-    grid-template-columns: 2.2rem 1fr;
+    grid-template-columns: 28px 1fr;
     gap: 0.85rem;
   }
 
   .critique-copy__icon {
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 28px;
+    height: 28px;
   }
 }
 
