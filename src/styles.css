@@ -1,7 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+@import '@fontsource/geist/400.css';
+@import '@fontsource/geist/500.css';
+@import '@fontsource/geist/600.css';
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+@import '@fontsource/instrument-serif/400.css';
 
 :root {
-  font-family: 'Geist', sans-serif;
+  font-family: 'Geist', 'Segoe UI', sans-serif;
   color: #050505;
   background: #fff;
   font-synthesis: none;
@@ -49,7 +54,6 @@ figure {
   margin: 0;
 }
 
-.state-label,
 .page-footer {
   font-family: 'Geist Mono', monospace;
   font-size: 0.68rem;
@@ -132,47 +136,14 @@ figure {
   width: 100%;
 }
 
-.image-stage__topline {
-  display: flex;
-  align-items: center;
-  min-height: 2.2rem;
-  margin-bottom: 0.75rem;
-}
-
-.state-label {
-  color: var(--muted);
-  transition: opacity 368ms ease, transform 368ms ease, color 368ms ease;
-}
-
-.state-label--before {
-  opacity: 1;
-}
-
-.state-label--after {
-  position: absolute;
-  color: var(--ink);
-  opacity: 0;
-  transform: translateY(0.35rem);
-}
-
-.is-after .state-label--before {
-  opacity: 0;
-  transform: translateY(-0.35rem);
-}
-
-.is-after .state-label--after {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .image-stage__viewport {
   position: relative;
   overflow: hidden;
   border: none;
   border-radius: 0.35rem;
-  background: var(--media);
+  background: #fff;
   box-shadow: none;
-  padding: 1.1rem;
+  padding: 0;
 }
 
 .image-stage__image {
@@ -191,9 +162,9 @@ figure {
 
 .image-stage__image--after {
   position: absolute;
-  inset: 1.1rem;
-  width: calc(100% - 2.2rem);
-  height: calc(100% - 2.2rem);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   transform: scale(1.012);
 }
@@ -372,16 +343,6 @@ figure {
 
   .mobile-critique .critique-copy {
     margin-top: 1rem;
-  }
-
-  .image-stage__viewport {
-    padding: 0.85rem;
-  }
-
-  .image-stage__image--after {
-    inset: 0.85rem;
-    width: calc(100% - 1.7rem);
-    height: calc(100% - 1.7rem);
   }
 
   .mobile-resolution {

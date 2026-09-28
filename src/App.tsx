@@ -245,7 +245,10 @@ function ImageStage({
       : null
 
   return (
-    <figure className={`image-stage ${showingAfter ? 'is-after' : ''}`}>
+    <figure
+      className={`image-stage${showingAfter ? ' is-after' : ''}`}
+      aria-label={showingAfter ? set.afterAlt : set.beforeAlt}
+    >
       <div className="image-stage__viewport">
         <img
           className="image-stage__image image-stage__image--before"
