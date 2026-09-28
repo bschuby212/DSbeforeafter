@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
 type Highlight = {
@@ -36,6 +36,8 @@ type ResolutionPoint = {
 }
 
 type CritiqueSet = {
+  id: string
+  label: string
   title: string
   summary: string
   resolutionTitle: string
@@ -50,6 +52,8 @@ type CritiqueSet = {
 
 const critiqueSets: CritiqueSet[] = [
   {
+    id: 'workspace',
+    label: 'Workspace',
     title: 'Finding focus in a crowded workspace',
     summary:
       'A closer look at how structure, hierarchy, and feedback made a familiar workflow harder than it needed to be.',
@@ -114,6 +118,8 @@ const critiqueSets: CritiqueSet[] = [
     ],
   },
   {
+    id: 'insights',
+    label: 'Insights',
     title: 'Making complex decisions feel lighter',
     summary:
       'The second workflow reveals where unclear sequencing and fragmented details slowed confident decisions.',
@@ -174,6 +180,72 @@ const critiqueSets: CritiqueSet[] = [
         description:
           'Supporting context is isolated from the main analysis, creating unnecessary back-and-forth.',
         highlight: { top: '54%', left: '67%', width: '28%', height: '39%' },
+      },
+    ],
+  },
+  {
+    id: 'docs',
+    label: 'Docs',
+    title: 'Turning documentation into guidance',
+    summary:
+      'A third look at how sparse structure and weak recommendations left teams guessing how to use a component.',
+    resolutionTitle: 'From reference to recommendation.',
+    resolutionDescription:
+      'The redesign pairs clear structure with practical guidance so teams can decide and ship with confidence.',
+    resolutionPoints: [
+      {
+        icon: 'check',
+        text: 'Usage guidance sits beside examples instead of afterthoughts.',
+      },
+      {
+        icon: 'sparkles',
+        text: 'Persistent navigation makes deep pages easier to browse in place.',
+      },
+    ],
+    beforeImage: '/images/docs-before.svg',
+    afterImage: '/images/docs-after.svg',
+    beforeAlt: 'Placeholder documentation interface before redesign',
+    afterAlt: 'Placeholder documentation interface after redesign',
+    critiques: [
+      {
+        id: '01',
+        icon: 'layers',
+        title: 'Structure feels inconsistent',
+        description:
+          'Sections are grouped unevenly, making variations and relationships harder to understand.',
+        highlight: { top: '12%', left: '6%', width: '18%', height: '70%' },
+      },
+      {
+        id: '02',
+        icon: 'feedback',
+        title: 'Guidance is too thin',
+        description:
+          'Examples appear without clear recommendations, so teams still have to invent the right pattern.',
+        highlight: { top: '24%', left: '28%', width: '62%', height: '42%' },
+      },
+      {
+        id: '03',
+        icon: 'route',
+        title: 'Navigation drops away',
+        description:
+          'In-page wayfinding disappears as content deepens, forcing constant scrolling to reorient.',
+        highlight: { top: '6%', left: '6%', width: '88%', height: '12%' },
+      },
+      {
+        id: '04',
+        icon: 'grid',
+        title: 'Specs compete with meaning',
+        description:
+          'Technical detail and usage intent carry similar weight, slowing decisions instead of supporting them.',
+        highlight: { top: '58%', left: '28%', width: '62%', height: '30%' },
+      },
+      {
+        id: '05',
+        icon: 'link',
+        title: 'Related pieces feel isolated',
+        description:
+          'Variants and adjacent components are hard to reach, interrupting the path from question to answer.',
+        highlight: { top: '20%', left: '6%', width: '18%', height: '28%' },
       },
     ],
   },
@@ -277,9 +349,6 @@ function ImageStage({
   activeIndex: number
   idPrefix: string
 }) {
-  // Base state (-1): plain before, no highlight.
-  // Critique steps: before + highlight.
-  // Resolution: after, no highlight.
   const showingAfter = activeIndex >= set.critiques.length
   const critique =
     activeIndex >= 0 && activeIndex < set.critiques.length
@@ -318,11 +387,11 @@ function ImageStage({
 function MobileCritique({
   critique,
   set,
-  setIndex,
+  caseId,
 }: {
   critique: Critique
   set: CritiqueSet
-  setIndex: number
+  caseId: string
 }) {
   const critiqueIndex = set.critiques.indexOf(critique)
 
@@ -331,7 +400,7 @@ function MobileCritique({
       <ImageStage
         set={set}
         activeIndex={critiqueIndex}
-        idPrefix={`mobile-${setIndex}`}
+        idPrefix={`mobile-${caseId}`}
       />
       <div className="critique-copy is-active">
         <CritiqueIcon name={critique.icon} />
@@ -344,12 +413,53 @@ function MobileCritique({
   )
 }
 
+function CaseSwitcher({
+  cases,
+  activeId,
+  onSelect,
+}: {
+  cases: CritiqueSet[]
+  activeId: string
+  onSelect: (id: string) => void
+}) {
+  return (
+    <div className="case-switcher" role="tablist" aria-label="UX critique cases">
+      <p className="case-switcher__label">Explore another case</p>
+      <div className="case-switcher__tabs">
+        {cases.map((item) => {
+          const selected = item.id === activeId
+          return (
+            <button
+              type="button"
+              role="tab"
+              key={item.id}
+              id={`case-tab-${item.id}`}
+              className={`case-switcher__tab${selected ? ' is-selected' : ''}`}
+              aria-selected={selected}
+              tabIndex={selected ? 0 : -1}
+              onClick={() => onSelect(item.id)}
+            >
+              {item.label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function ResolutionCopy({
   set,
   isActive,
+  cases,
+  activeCaseId,
+  onSelectCase,
 }: {
   set: CritiqueSet
   isActive: boolean
+  cases: CritiqueSet[]
+  activeCaseId: string
+  onSelectCase: (id: string) => void
 }) {
   return (
     <div className={`resolution-copy ${isActive ? 'is-active' : ''}`}>
@@ -363,20 +473,35 @@ function ResolutionCopy({
           </li>
         ))}
       </ul>
+      <CaseSwitcher
+        cases={cases}
+        activeId={activeCaseId}
+        onSelect={onSelectCase}
+      />
     </div>
   )
 }
 
 function BeforeAfterStory({
   set,
-  setIndex,
+  cases,
+  activeCaseId,
+  onSelectCase,
 }: {
   set: CritiqueSet
-  setIndex: number
+  cases: CritiqueSet[]
+  activeCaseId: string
+  onSelectCase: (id: string) => void
 }) {
   const [activeIndex, setActiveIndex] = useState(-1)
   const stepsRef = useRef<(HTMLElement | null)[]>([])
   const hasScrolledRef = useRef(false)
+  const sectionRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    hasScrolledRef.current = false
+    setActiveIndex(-1)
+  }, [set.id])
 
   useEffect(() => {
     const onScroll = () => {
@@ -386,7 +511,6 @@ function BeforeAfterStory({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Stay on base state until the user has scrolled.
         if (!hasScrolledRef.current) {
           setActiveIndex(-1)
           return
@@ -421,26 +545,38 @@ function BeforeAfterStory({
       window.removeEventListener('scroll', onScroll)
       observer.disconnect()
     }
-  }, [])
+  }, [set.id])
 
   const registerStep = (index: number) => (node: HTMLElement | null) => {
     stepsRef.current[index] = node
   }
 
+  const handleSelectCase = (id: string) => {
+    if (id === activeCaseId) return
+    onSelectCase(id)
+    requestAnimationFrame(() => {
+      sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+
   return (
-    <section className="story" aria-labelledby={`story-title-${setIndex}`}>
+    <section
+      className="story"
+      ref={sectionRef}
+      aria-labelledby={`story-title-${set.id}`}
+    >
       <header className="story__header">
-        <h2 id={`story-title-${setIndex}`}>{set.title}</h2>
+        <h2 id={`story-title-${set.id}`}>{set.title}</h2>
         <p>{set.summary}</p>
       </header>
 
-      <div className="story__desktop">
+      <div className="story__desktop story__exchange" key={set.id}>
         <div className="story__visual">
           <div className="story__sticky">
             <ImageStage
               set={set}
               activeIndex={activeIndex}
-              idPrefix={`desktop-${setIndex}`}
+              idPrefix={`desktop-${set.id}`}
             />
           </div>
         </div>
@@ -476,26 +612,35 @@ function BeforeAfterStory({
             <ResolutionCopy
               set={set}
               isActive={activeIndex === set.critiques.length}
+              cases={cases}
+              activeCaseId={activeCaseId}
+              onSelectCase={handleSelectCase}
             />
           </article>
         </div>
       </div>
 
-      <div className="story__mobile">
+      <div className="story__mobile story__exchange" key={`mobile-${set.id}`}>
         {set.critiques.map((critique) => (
           <MobileCritique
             critique={critique}
             set={set}
-            setIndex={setIndex}
+            caseId={set.id}
             key={critique.id}
           />
         ))}
         <div className="mobile-resolution">
-          <ResolutionCopy set={set} isActive />
+          <ResolutionCopy
+            set={set}
+            isActive
+            cases={cases}
+            activeCaseId={activeCaseId}
+            onSelectCase={handleSelectCase}
+          />
           <ImageStage
             set={set}
             activeIndex={set.critiques.length}
-            idPrefix={`mobile-after-${setIndex}`}
+            idPrefix={`mobile-after-${set.id}`}
           />
         </div>
       </div>
@@ -504,23 +649,18 @@ function BeforeAfterStory({
 }
 
 export default function App() {
+  const [activeCaseId, setActiveCaseId] = useState(critiqueSets[0].id)
+  const activeSet =
+    critiqueSets.find((set) => set.id === activeCaseId) ?? critiqueSets[0]
+
   return (
     <main>
-      {critiqueSets.map((set, index) => (
-        <Fragment key={set.title}>
-          {index === 1 && (
-            <section
-              className="chapter-transition"
-              aria-labelledby="chapter-transition-title"
-            >
-              <h2 id="chapter-transition-title">
-                From navigating work to understanding outcomes.
-              </h2>
-            </section>
-          )}
-          <BeforeAfterStory set={set} setIndex={index} />
-        </Fragment>
-      ))}
+      <BeforeAfterStory
+        set={activeSet}
+        cases={critiqueSets}
+        activeCaseId={activeCaseId}
+        onSelectCase={setActiveCaseId}
+      />
 
       <footer className="page-footer">
         <span>End of critique</span>
