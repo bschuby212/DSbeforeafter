@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-  <rect width="1200" height="800" fill="#e4e4e4"/>
+  <rect width="1200" height="800" fill="#ffffff"/>
   <rect x="24" y="24" width="1152" height="752" rx="16" fill="#f8f8f8"/>
   <rect x="24" y="24" width="1152" height="84" rx="16" fill="#efefef"/>
   <text x="60" y="74" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#323430">Metricbox</text>
