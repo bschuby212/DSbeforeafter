@@ -258,14 +258,12 @@ figure {
 }
 
 .resolution-copy {
-  opacity: 0.28;
+  opacity: 0;
   transform: translateY(0.7rem);
-  transition: opacity 414ms ease, transform 414ms ease;
 }
 
 .resolution-copy.is-active {
-  opacity: 1;
-  transform: translateY(0);
+  animation: resolution-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .resolution-copy h3 {
@@ -291,29 +289,29 @@ figure {
 
 .resolution-point {
   display: grid;
-  grid-template-columns: 2.2rem 1fr;
+  grid-template-columns: 1.25rem 1fr;
   gap: 0.85rem;
   align-items: start;
   color: var(--ink);
-  opacity: 0;
-  transform: translateY(0.65rem);
-}
-
-.resolution-copy.is-active .resolution-point {
-  animation: resolution-point-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: calc(180ms + var(--point-index, 0) * 120ms);
 }
 
 .resolution-point .critique-copy__icon {
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: transparent;
+  border-radius: 0;
+  color: var(--accent);
+}
+
+.resolution-point .critique-copy__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .resolution-point span {
   font-size: 0.95rem;
   line-height: 1.55;
   color: var(--soft);
-  padding-top: 0.25rem;
 }
 
 .story__intro-runway {
@@ -344,10 +342,10 @@ figure {
   }
 }
 
-@keyframes resolution-point-in {
+@keyframes resolution-in {
   from {
     opacity: 0;
-    transform: translateY(0.65rem);
+    transform: translateY(0.7rem);
   }
   to {
     opacity: 1;

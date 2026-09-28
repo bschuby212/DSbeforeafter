@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 type Highlight = {
   top: string
@@ -356,12 +356,8 @@ function ResolutionCopy({
       <h3>{set.resolutionTitle}</h3>
       <p className="resolution-copy__body">{set.resolutionDescription}</p>
       <ul className="resolution-points">
-        {set.resolutionPoints.map((point, index) => (
-          <li
-            className="resolution-point"
-            key={point.text}
-            style={{ '--point-index': index } as CSSProperties}
-          >
+        {set.resolutionPoints.map((point) => (
+          <li className="resolution-point" key={point.text}>
             <CritiqueIcon name={point.icon} />
             <span>{point.text}</span>
           </li>
