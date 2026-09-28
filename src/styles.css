@@ -226,7 +226,13 @@ figure {
   line-height: 1.2;
 }
 
-.critique-copy p,
+.critique-copy p {
+  margin-top: 0.9rem;
+  color: inherit;
+  font-size: 0.96rem;
+  line-height: 1.7;
+}
+
 .resolution-copy {
   color: var(--ink);
 }
