@@ -32,6 +32,9 @@ type CritiqueSet = {
   eyebrow: string
   title: string
   summary: string
+  resolutionTitle: string
+  resolutionDescription: string
+  afterCaption: string
   beforeImage: string
   afterImage: string
   beforeAlt: string
@@ -45,6 +48,11 @@ const critiqueSets: CritiqueSet[] = [
     title: 'Finding focus in a crowded workspace',
     summary:
       'A closer look at how structure, hierarchy, and feedback made a familiar workflow harder than it needed to be.',
+    resolutionTitle: 'From friction to focus.',
+    resolutionDescription:
+      'The redesigned experience clarifies the path forward while keeping the context people need close at hand.',
+    afterCaption:
+      'A calmer structure brings priority, progress, and action into one clear path.',
     beforeImage: '/images/workspace-before.svg',
     afterImage: '/images/workspace-after.svg',
     beforeAlt: 'Placeholder dashboard interface before redesign',
@@ -97,6 +105,11 @@ const critiqueSets: CritiqueSet[] = [
     title: 'Making complex decisions feel lighter',
     summary:
       'The second workflow reveals where unclear sequencing and fragmented details slowed confident decisions.',
+    resolutionTitle: 'From data to direction.',
+    resolutionDescription:
+      'The redesign brings related signals together, making patterns easier to compare and decisions easier to trust.',
+    afterCaption:
+      'A connected view turns fragmented metrics into a clear, actionable story.',
     beforeImage: '/images/insights-before.svg',
     afterImage: '/images/insights-after.svg',
     beforeAlt: 'Placeholder analytics interface before redesign',
@@ -271,7 +284,7 @@ function ImageStage({
       </div>
       <figcaption className="image-stage__caption">
         {showingAfter
-          ? 'A calmer structure brings priority, progress, and action into one clear path.'
+          ? set.afterCaption
           : `Area ${critique?.id} · ${critique?.title}`}
       </figcaption>
     </figure>
@@ -397,11 +410,8 @@ function BeforeAfterStory({
               }`}
             >
               <p className="eyebrow">The redesign</p>
-              <h3>From friction to focus.</h3>
-              <p>
-                The redesigned experience clarifies the path forward while
-                keeping the context people need close at hand.
-              </p>
+              <h3>{set.resolutionTitle}</h3>
+              <p>{set.resolutionDescription}</p>
             </div>
           </article>
         </div>
@@ -419,11 +429,8 @@ function BeforeAfterStory({
         <div className="mobile-resolution">
           <div className="resolution-copy is-active">
             <p className="eyebrow">The redesign</p>
-            <h3>From friction to focus.</h3>
-            <p>
-              A clearer hierarchy and stronger grouping make the next step
-              easier to see.
-            </p>
+            <h3>{set.resolutionTitle}</h3>
+            <p>{set.resolutionDescription}</p>
           </div>
           <ImageStage
             set={set}
