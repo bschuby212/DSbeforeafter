@@ -462,7 +462,10 @@ function ResolutionCopy({
   onSelectCase: (id: string) => void
 }) {
   return (
-    <div className={`resolution-copy ${isActive ? 'is-active' : ''}`}>
+    <div
+      className={`resolution-copy ${isActive ? 'is-active' : ''}`}
+      key={isActive ? `${set.id}-active` : `${set.id}-idle`}
+    >
       <h3>{set.resolutionTitle}</h3>
       <p className="resolution-copy__body">{set.resolutionDescription}</p>
       <ul className="resolution-points">
