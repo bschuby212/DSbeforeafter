@@ -493,19 +493,15 @@ function BeforeAfterStory({
     setActiveIndex(-1)
   }, [set.id])
 
-  // Lock sticky top to the media's natural Y so it doesn't ride up / clip on scroll.
+  // Keep media sticky just under the fixed title / summary / tabs.
   useLayoutEffect(() => {
     const sticky = stickyRef.current
     const header = headerRef.current
     if (!sticky || !header) return
 
     const update = () => {
-      // Header bottom in document space == media's natural viewport top at scroll 0.
-      const top = header.getBoundingClientRect().bottom + window.scrollY
-      sticky.style.setProperty(
-        '--story-sticky-top',
-        `${Math.max(0, Math.round(top))}px`,
-      )
+      const top = Math.ceil(header.getBoundingClientRect().height)
+      sticky.style.setProperty('--story-sticky-top', `${Math.max(0, top)}px`)
     }
 
     update()
@@ -671,10 +667,6 @@ export default function App() {
         cases={critiqueSets}
         onSelectCase={setActiveCaseId}
       />
-
-      <footer className="page-footer">
-        <span>End of critique</span>
-      </footer>
     </main>
   )
 }

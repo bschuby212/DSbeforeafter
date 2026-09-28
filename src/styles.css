@@ -54,28 +54,24 @@ figure {
   margin: 0;
 }
 
-.page-footer {
-  font-family: 'Geist Mono', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .story {
   max-width: 100rem;
   margin: 0 auto;
-  padding: 4rem clamp(1.5rem, 6vw, 6rem) 10rem;
+  padding: 0 clamp(1.5rem, 6vw, 6rem) 10rem;
 }
 
 .story__header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
   column-gap: 10vw;
   align-items: end;
   max-width: 83rem;
   margin: 0 auto;
-  padding: 0 0 4.75rem;
-  background: transparent;
+  padding: 2.5rem 0 2.5rem;
+  background: #fff;
 }
 
 .story__header h2 {
@@ -117,7 +113,7 @@ figure {
 
 .story__sticky {
   position: sticky;
-  top: var(--story-sticky-top, 4rem);
+  top: var(--story-sticky-top, 8rem);
   overflow-anchor: none;
 }
 
@@ -366,15 +362,6 @@ figure {
   display: none;
 }
 
-.page-footer {
-  display: flex;
-  justify-content: flex-start;
-  max-width: 88rem;
-  margin: 0 auto;
-  padding: 3rem clamp(1.5rem, 6vw, 6rem) 5rem;
-  color: var(--muted);
-}
-
 @keyframes highlight-in {
   from {
     opacity: 0;
@@ -408,7 +395,7 @@ figure {
 
 @media (max-width: 800px) {
   .story {
-    padding-top: 3rem;
+    padding-top: 0;
     padding-bottom: 6rem;
   }
 
@@ -417,7 +404,7 @@ figure {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
-    padding-bottom: 2.5rem;
+    padding: 2rem 0 2rem;
   }
 
   .story__header-aside {
@@ -454,8 +441,7 @@ figure {
 }
 
 @media (max-width: 480px) {
-  .story,
-  .page-footer {
+  .story {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
