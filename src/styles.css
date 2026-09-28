@@ -3,15 +3,15 @@
 :root {
   font-family: 'Geist', sans-serif;
   color: #050505;
-  background: #ffffff;
+  background: #fff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --ink: #050505;
   --muted: #9ba1a5;
   --soft: #6b7075;
   --accent: #1769ff;
-  --surface: #f6f6f6;
-  --media: #e8e8e8;
+  --surface: #fff;
+  --media: #fff;
   --line: rgba(5, 5, 5, 0.08);
 }
 
@@ -21,13 +21,19 @@
 
 html {
   scroll-behavior: smooth;
+  background: #fff;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #ffffff;
+  background: #fff;
+}
+
+#root {
+  min-height: 100vh;
+  background: #fff;
 }
 
 img {

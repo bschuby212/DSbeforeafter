@@ -246,11 +246,6 @@ function ImageStage({
 
   return (
     <figure className={`image-stage ${showingAfter ? 'is-after' : ''}`}>
-      <div className="image-stage__topline">
-        <span className="state-label state-label--before">Before</span>
-        <span className="state-label state-label--after">After</span>
-      </div>
-
       <div className="image-stage__viewport">
         <img
           className="image-stage__image image-stage__image--before"
