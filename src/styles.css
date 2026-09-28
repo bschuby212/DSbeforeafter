@@ -225,8 +225,8 @@ figure {
 
 .critique-copy__icon {
   display: flex;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   align-items: center;
   justify-content: center;
   border-radius: 0.35rem;
@@ -258,12 +258,17 @@ figure {
 }
 
 .resolution-copy {
-  opacity: 0;
+  opacity: 0.42;
   transform: translateY(0.7rem);
+  transition:
+    opacity 368ms ease,
+    color 368ms ease,
+    transform 368ms ease;
 }
 
 .resolution-copy.is-active {
-  animation: resolution-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .resolution-copy h3 {
@@ -342,17 +347,6 @@ figure {
   }
 }
 
-@keyframes resolution-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.7rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (max-width: 800px) {
   .story {
     padding-top: 4rem;
@@ -416,13 +410,13 @@ figure {
   }
 
   .critique-copy {
-    grid-template-columns: 28px 1fr;
+    grid-template-columns: 32px 1fr;
     gap: 0.85rem;
   }
 
   .critique-copy__icon {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
   }
 }
 
