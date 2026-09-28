@@ -29,7 +29,6 @@ type IconName =
   | 'link'
 
 type CritiqueSet = {
-  eyebrow: string
   title: string
   summary: string
   resolutionTitle: string
@@ -43,7 +42,6 @@ type CritiqueSet = {
 
 const critiqueSets: CritiqueSet[] = [
   {
-    eyebrow: 'Chapter 01 · Discovery',
     title: 'Finding focus in a crowded workspace',
     summary:
       'A closer look at how structure, hierarchy, and feedback made a familiar workflow harder than it needed to be.',
@@ -98,7 +96,6 @@ const critiqueSets: CritiqueSet[] = [
     ],
   },
   {
-    eyebrow: 'Chapter 02 · Refinement',
     title: 'Making complex decisions feel lighter',
     summary:
       'The second workflow reveals where unclear sequencing and fragmented details slowed confident decisions.',
@@ -342,7 +339,6 @@ function BeforeAfterStory({
   return (
     <section className="story" aria-labelledby={`story-title-${setIndex}`}>
       <header className="story__header">
-        <p className="eyebrow">{set.eyebrow}</p>
         <h2 id={`story-title-${setIndex}`}>{set.title}</h2>
         <p>{set.summary}</p>
       </header>
@@ -390,7 +386,6 @@ function BeforeAfterStory({
                 activeIndex === set.critiques.length ? 'is-active' : ''
               }`}
             >
-              <p className="eyebrow">The redesign</p>
               <h3>{set.resolutionTitle}</h3>
               <p>{set.resolutionDescription}</p>
             </div>
@@ -409,7 +404,6 @@ function BeforeAfterStory({
         ))}
         <div className="mobile-resolution">
           <div className="resolution-copy is-active">
-            <p className="eyebrow">The redesign</p>
             <h3>{set.resolutionTitle}</h3>
             <p>{set.resolutionDescription}</p>
           </div>
@@ -434,7 +428,6 @@ export default function App() {
               className="chapter-transition"
               aria-labelledby="chapter-transition-title"
             >
-              <p className="eyebrow">Next chapter</p>
               <h2 id="chapter-transition-title">
                 From navigating work to understanding outcomes.
               </h2>
