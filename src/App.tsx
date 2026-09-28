@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
 type Highlight = {
@@ -485,10 +485,43 @@ function BeforeAfterStory({
   const [activeIndex, setActiveIndex] = useState(-1)
   const stepsRef = useRef<(HTMLElement | null)[]>([])
   const hasScrolledRef = useRef(false)
+  const stickyRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     hasScrolledRef.current = false
     setActiveIndex(-1)
+  }, [set.id])
+
+  // Lock sticky top to the media's natural Y so it doesn't ride up / clip on scroll.
+  useLayoutEffect(() => {
+    const sticky = stickyRef.current
+    const header = headerRef.current
+    if (!sticky || !header) return
+
+    const update = () => {
+      // Header bottom in document space == media's natural viewport top at scroll 0.
+      const top = header.getBoundingClientRect().bottom + window.scrollY
+      sticky.style.setProperty(
+        '--story-sticky-top',
+        `${Math.max(0, Math.round(top))}px`,
+      )
+    }
+
+    update()
+    const frame = window.requestAnimationFrame(update)
+    const observer = new ResizeObserver(update)
+    observer.observe(header)
+    if (document.fonts?.ready) {
+      void document.fonts.ready.then(update)
+    }
+    window.addEventListener('resize', update)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      observer.disconnect()
+      window.removeEventListener('resize', update)
+    }
   }, [set.id])
 
   useEffect(() => {
@@ -545,7 +578,7 @@ function BeforeAfterStory({
       id={`story-${set.id}`}
       aria-labelledby={`story-title-${set.id}`}
     >
-      <header className="story__header">
+      <header className="story__header" ref={headerRef}>
         <h2 id={`story-title-${set.id}`}>{set.title}</h2>
         <div className="story__header-aside">
           <p>{set.summary}</p>
@@ -559,7 +592,7 @@ function BeforeAfterStory({
 
       <div className="story__desktop story__exchange" key={set.id}>
         <div className="story__visual">
-          <div className="story__sticky">
+          <div className="story__sticky" ref={stickyRef}>
             <ImageStage
               set={set}
               activeIndex={activeIndex}
