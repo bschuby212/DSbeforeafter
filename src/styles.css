@@ -250,7 +250,7 @@ figure {
 }
 
 .critique-copy p,
-.resolution-copy > p:last-child {
+.resolution-copy__body {
   margin-top: 0.9rem;
   color: inherit;
   font-size: 0.96rem;
@@ -269,15 +269,55 @@ figure {
 }
 
 .resolution-copy h3 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(2rem, 3.4vw, 3.1rem);
-  font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  font-family: 'Geist', 'Segoe UI', sans-serif;
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
 }
 
-.resolution-copy > p:last-child {
+.resolution-copy__body {
   color: var(--soft);
+}
+
+.resolution-points {
+  list-style: none;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.resolution-point {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(0.65rem);
+}
+
+.resolution-copy.is-active .resolution-point {
+  animation: resolution-point-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(180ms + var(--point-index, 0) * 120ms);
+}
+
+.resolution-point .critique-copy__icon {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.resolution-point span {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--soft);
+  padding-top: 0.25rem;
+}
+
+.story__intro-runway {
+  min-height: 48vh;
 }
 
 .story__mobile {
@@ -301,6 +341,17 @@ figure {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes resolution-point-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.65rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

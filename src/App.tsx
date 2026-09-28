@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 type Highlight = {
   top: string
@@ -27,12 +27,20 @@ type IconName =
   | 'compare'
   | 'chart'
   | 'link'
+  | 'check'
+  | 'sparkles'
+
+type ResolutionPoint = {
+  icon: IconName
+  text: string
+}
 
 type CritiqueSet = {
   title: string
   summary: string
   resolutionTitle: string
   resolutionDescription: string
+  resolutionPoints: [ResolutionPoint, ResolutionPoint]
   beforeImage: string
   afterImage: string
   beforeAlt: string
@@ -48,6 +56,16 @@ const critiqueSets: CritiqueSet[] = [
     resolutionTitle: 'From friction to focus.',
     resolutionDescription:
       'The redesigned experience clarifies the path forward while keeping the context people need close at hand.',
+    resolutionPoints: [
+      {
+        icon: 'check',
+        text: 'Priority, progress, and action sit in one clear path.',
+      },
+      {
+        icon: 'sparkles',
+        text: 'Hierarchy and feedback make the next step obvious.',
+      },
+    ],
     beforeImage: '/images/workspace-before.svg',
     afterImage: '/images/workspace-after.svg',
     beforeAlt: 'Placeholder dashboard interface before redesign',
@@ -102,6 +120,16 @@ const critiqueSets: CritiqueSet[] = [
     resolutionTitle: 'From data to direction.',
     resolutionDescription:
       'The redesign brings related signals together, making patterns easier to compare and decisions easier to trust.',
+    resolutionPoints: [
+      {
+        icon: 'check',
+        text: 'Related metrics stay connected so comparisons stay in view.',
+      },
+      {
+        icon: 'sparkles',
+        text: 'Clear structure turns dense data into an actionable story.',
+      },
+    ],
     beforeImage: '/images/insights-before.svg',
     afterImage: '/images/insights-after.svg',
     beforeAlt: 'Placeholder analytics interface before redesign',
@@ -217,6 +245,18 @@ function CritiqueIcon({ name }: { name: IconName }) {
         <path d="m16.5 7.5 1.5-1.5a3.5 3.5 0 0 1 5 5l-3 3a3.5 3.5 0 0 1-5 0" />
       </>
     ),
+    check: (
+      <>
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="m8.5 12.2 2.4 2.4 4.6-5" />
+      </>
+    ),
+    sparkles: (
+      <>
+        <path d="M12 4v3M12 17v3M4 12h3M17 12h3" />
+        <path d="m7.8 7.8 2.1 2.1M14.1 14.1l2.1 2.1M16.2 7.8l-2.1 2.1M9.9 14.1l-2.1 2.1" />
+      </>
+    ),
   }
 
   return (
@@ -237,8 +277,10 @@ function ImageStage({
   activeIndex: number
   idPrefix: string
 }) {
-  const showingAfter =
-    activeIndex < 0 || activeIndex >= set.critiques.length
+  // Base state (-1): plain before, no highlight.
+  // Critique steps: before + highlight.
+  // Resolution: after, no highlight.
+  const showingAfter = activeIndex >= set.critiques.length
   const critique =
     activeIndex >= 0 && activeIndex < set.critiques.length
       ? set.critiques[activeIndex]
@@ -260,7 +302,7 @@ function ImageStage({
           src={set.afterImage}
           alt={showingAfter ? set.afterAlt : ''}
         />
-        {!showingAfter && critique && (
+        {critique && (
           <span
             key={`${idPrefix}-${critique.id}`}
             className="image-stage__highlight"
@@ -302,6 +344,33 @@ function MobileCritique({
   )
 }
 
+function ResolutionCopy({
+  set,
+  isActive,
+}: {
+  set: CritiqueSet
+  isActive: boolean
+}) {
+  return (
+    <div className={`resolution-copy ${isActive ? 'is-active' : ''}`}>
+      <h3>{set.resolutionTitle}</h3>
+      <p className="resolution-copy__body">{set.resolutionDescription}</p>
+      <ul className="resolution-points">
+        {set.resolutionPoints.map((point, index) => (
+          <li
+            className="resolution-point"
+            key={point.text}
+            style={{ '--point-index': index } as CSSProperties}
+          >
+            <CritiqueIcon name={point.icon} />
+            <span>{point.text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function BeforeAfterStory({
   set,
   setIndex,
@@ -311,10 +380,22 @@ function BeforeAfterStory({
 }) {
   const [activeIndex, setActiveIndex] = useState(-1)
   const stepsRef = useRef<(HTMLElement | null)[]>([])
+  const hasScrolledRef = useRef(false)
 
   useEffect(() => {
+    const onScroll = () => {
+      hasScrolledRef.current = true
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
     const observer = new IntersectionObserver(
       (entries) => {
+        // Stay on base state until the user has scrolled.
+        if (!hasScrolledRef.current) {
+          setActiveIndex(-1)
+          return
+        }
+
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort(
@@ -328,7 +409,6 @@ function BeforeAfterStory({
           return
         }
 
-        // No critique/resolution step in the focus band — show plain after.
         const focusBandOccupied = stepsRef.current.some((step) => {
           if (!step) return false
           const rect = step.getBoundingClientRect()
@@ -341,7 +421,10 @@ function BeforeAfterStory({
     )
 
     stepsRef.current.forEach((step) => step && observer.observe(step))
-    return () => observer.disconnect()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      observer.disconnect()
+    }
   }, [])
 
   const registerStep = (index: number) => (node: HTMLElement | null) => {
@@ -367,6 +450,7 @@ function BeforeAfterStory({
         </div>
 
         <div className="story__steps">
+          <div className="story__intro-runway" aria-hidden="true" />
           {set.critiques.map((critique, index) => (
             <article
               className="story__step"
@@ -393,14 +477,10 @@ function BeforeAfterStory({
             data-step={set.critiques.length}
             ref={registerStep(set.critiques.length)}
           >
-            <div
-              className={`resolution-copy ${
-                activeIndex === set.critiques.length ? 'is-active' : ''
-              }`}
-            >
-              <h3>{set.resolutionTitle}</h3>
-              <p>{set.resolutionDescription}</p>
-            </div>
+            <ResolutionCopy
+              set={set}
+              isActive={activeIndex === set.critiques.length}
+            />
           </article>
         </div>
       </div>
@@ -415,10 +495,7 @@ function BeforeAfterStory({
           />
         ))}
         <div className="mobile-resolution">
-          <div className="resolution-copy is-active">
-            <h3>{set.resolutionTitle}</h3>
-            <p>{set.resolutionDescription}</p>
-          </div>
+          <ResolutionCopy set={set} isActive />
           <ImageStage
             set={set}
             activeIndex={set.critiques.length}
