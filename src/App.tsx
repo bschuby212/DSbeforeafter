@@ -34,7 +34,6 @@ type CritiqueSet = {
   summary: string
   resolutionTitle: string
   resolutionDescription: string
-  afterCaption: string
   beforeImage: string
   afterImage: string
   beforeAlt: string
@@ -51,8 +50,6 @@ const critiqueSets: CritiqueSet[] = [
     resolutionTitle: 'From friction to focus.',
     resolutionDescription:
       'The redesigned experience clarifies the path forward while keeping the context people need close at hand.',
-    afterCaption:
-      'A calmer structure brings priority, progress, and action into one clear path.',
     beforeImage: '/images/workspace-before.svg',
     afterImage: '/images/workspace-after.svg',
     beforeAlt: 'Placeholder dashboard interface before redesign',
@@ -108,8 +105,6 @@ const critiqueSets: CritiqueSet[] = [
     resolutionTitle: 'From data to direction.',
     resolutionDescription:
       'The redesign brings related signals together, making patterns easier to compare and decisions easier to trust.',
-    afterCaption:
-      'A connected view turns fragmented metrics into a clear, actionable story.',
     beforeImage: '/images/insights-before.svg',
     afterImage: '/images/insights-after.svg',
     beforeAlt: 'Placeholder analytics interface before redesign',
@@ -253,13 +248,6 @@ function ImageStage({
       <div className="image-stage__topline">
         <span className="state-label state-label--before">Before</span>
         <span className="state-label state-label--after">After</span>
-        <span className="image-stage__counter" aria-hidden="true">
-          {showingAfter
-            ? 'Redesigned'
-            : `${String(activeIndex + 1).padStart(2, '0')} / ${String(
-                set.critiques.length,
-              ).padStart(2, '0')}`}
-        </span>
       </div>
 
       <div className="image-stage__viewport">
@@ -282,11 +270,6 @@ function ImageStage({
           />
         )}
       </div>
-      <figcaption className="image-stage__caption">
-        {showingAfter
-          ? set.afterCaption
-          : `Area ${critique?.id} · ${critique?.title}`}
-      </figcaption>
     </figure>
   )
 }
@@ -310,9 +293,8 @@ function MobileCritique({
         idPrefix={`mobile-${setIndex}`}
       />
       <div className="critique-copy is-active">
-        <span className="critique-copy__number">{critique.id}</span>
+        <CritiqueIcon name={critique.icon} />
         <div>
-          <CritiqueIcon name={critique.icon} />
           <h3>{critique.title}</h3>
           <p>{critique.description}</p>
         </div>
@@ -389,9 +371,8 @@ function BeforeAfterStory({
                   activeIndex === index ? 'is-active' : ''
                 }`}
               >
-                <span className="critique-copy__number">{critique.id}</span>
+                <CritiqueIcon name={critique.icon} />
                 <div>
-                  <CritiqueIcon name={critique.icon} />
                   <h3>{critique.title}</h3>
                   <p>{critique.description}</p>
                 </div>
@@ -465,7 +446,6 @@ export default function App() {
 
       <footer className="page-footer">
         <span>End of critique</span>
-        <span>02 chapters · 10 observations</span>
       </footer>
     </main>
   )
