@@ -423,9 +423,8 @@ function CaseSwitcher({
   onSelect: (id: string) => void
 }) {
   return (
-    <div className="case-switcher" role="tablist" aria-label="UX critique cases">
-      <p className="case-switcher__label">Another screen</p>
-      <p className="case-switcher__hint">UX comparison</p>
+    <div className="case-switcher" role="tablist" aria-label="Screen UX comparisons">
+      <span className="case-switcher__hint">UX comparison</span>
       <div className="case-switcher__tabs">
         {cases.map((item) => {
           const selected = item.id === activeId
@@ -452,15 +451,9 @@ function CaseSwitcher({
 function ResolutionCopy({
   set,
   isActive,
-  cases,
-  activeCaseId,
-  onSelectCase,
 }: {
   set: CritiqueSet
   isActive: boolean
-  cases: CritiqueSet[]
-  activeCaseId: string
-  onSelectCase: (id: string) => void
 }) {
   return (
     <div
@@ -477,11 +470,6 @@ function ResolutionCopy({
           </li>
         ))}
       </ul>
-      <CaseSwitcher
-        cases={cases}
-        activeId={activeCaseId}
-        onSelect={onSelectCase}
-      />
     </div>
   )
 }
@@ -498,6 +486,11 @@ function BeforeAfterStory({
   const [activeIndex, setActiveIndex] = useState(-1)
   const stepsRef = useRef<(HTMLElement | null)[]>([])
   const hasScrolledRef = useRef(false)
+
+  useEffect(() => {
+    hasScrolledRef.current = false
+    setActiveIndex(-1)
+  }, [set.id])
 
   useEffect(() => {
     const onScroll = () => {
@@ -541,7 +534,7 @@ function BeforeAfterStory({
       window.removeEventListener('scroll', onScroll)
       observer.disconnect()
     }
-  }, [])
+  }, [set.id])
 
   const registerStep = (index: number) => (node: HTMLElement | null) => {
     stepsRef.current[index] = node
@@ -554,11 +547,16 @@ function BeforeAfterStory({
       aria-labelledby={`story-title-${set.id}`}
     >
       <header className="story__header">
+        <CaseSwitcher
+          cases={cases}
+          activeId={set.id}
+          onSelect={onSelectCase}
+        />
         <h2 id={`story-title-${set.id}`}>{set.title}</h2>
         <p>{set.summary}</p>
       </header>
 
-      <div className="story__desktop story__exchange">
+      <div className="story__desktop story__exchange" key={set.id}>
         <div className="story__visual">
           <div className="story__sticky">
             <ImageStage
@@ -600,15 +598,12 @@ function BeforeAfterStory({
             <ResolutionCopy
               set={set}
               isActive={activeIndex === set.critiques.length}
-              cases={cases}
-              activeCaseId={set.id}
-              onSelectCase={onSelectCase}
             />
           </article>
         </div>
       </div>
 
-      <div className="story__mobile story__exchange">
+      <div className="story__mobile story__exchange" key={`mobile-${set.id}`}>
         {set.critiques.map((critique) => (
           <MobileCritique
             critique={critique}
@@ -618,13 +613,7 @@ function BeforeAfterStory({
           />
         ))}
         <div className="mobile-resolution">
-          <ResolutionCopy
-            set={set}
-            isActive
-            cases={cases}
-            activeCaseId={set.id}
-            onSelectCase={onSelectCase}
-          />
+          <ResolutionCopy set={set} isActive />
           <ImageStage
             set={set}
             activeIndex={set.critiques.length}
@@ -637,43 +626,17 @@ function BeforeAfterStory({
 }
 
 export default function App() {
-  const [openedCaseIds, setOpenedCaseIds] = useState<string[]>([
-    critiqueSets[0].id,
-  ])
-
-  const handleSelectCase = (nextId: string) => {
-    setOpenedCaseIds((prev) => {
-      if (prev.includes(nextId)) return prev
-      return [...prev, nextId]
-    })
-
-    // New screen appears below — scroll down to it after paint, never jump up.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const nextStory = document.getElementById(`story-${nextId}`)
-        if (!nextStory) return
-        const top = nextStory.getBoundingClientRect().top + window.scrollY
-        if (top > window.scrollY + 8) {
-          nextStory.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      })
-    })
-  }
+  const [activeCaseId, setActiveCaseId] = useState(critiqueSets[0].id)
+  const activeSet =
+    critiqueSets.find((set) => set.id === activeCaseId) ?? critiqueSets[0]
 
   return (
     <main>
-      {openedCaseIds.map((id) => {
-        const set = critiqueSets.find((item) => item.id === id)
-        if (!set) return null
-        return (
-          <BeforeAfterStory
-            key={set.id}
-            set={set}
-            cases={critiqueSets}
-            onSelectCase={handleSelectCase}
-          />
-        )
-      })}
+      <BeforeAfterStory
+        set={activeSet}
+        cases={critiqueSets}
+        onSelectCase={setActiveCaseId}
+      />
 
       <footer className="page-footer">
         <span>End of critique</span>
