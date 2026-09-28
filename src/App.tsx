@@ -237,8 +237,12 @@ function ImageStage({
   activeIndex: number
   idPrefix: string
 }) {
-  const showingAfter = activeIndex >= set.critiques.length
-  const critique = set.critiques[Math.min(activeIndex, set.critiques.length - 1)]
+  const showingAfter =
+    activeIndex < 0 || activeIndex >= set.critiques.length
+  const critique =
+    activeIndex >= 0 && activeIndex < set.critiques.length
+      ? set.critiques[activeIndex]
+      : null
 
   return (
     <figure className={`image-stage ${showingAfter ? 'is-after' : ''}`}>
@@ -307,7 +311,7 @@ function BeforeAfterStory({
   set: CritiqueSet
   setIndex: number
 }) {
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(-1)
   const stepsRef = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
@@ -323,7 +327,17 @@ function BeforeAfterStory({
 
         if (visible[0]) {
           setActiveIndex(Number((visible[0].target as HTMLElement).dataset.step))
+          return
         }
+
+        // No critique/resolution step in the focus band — show plain after.
+        const focusBandOccupied = stepsRef.current.some((step) => {
+          if (!step) return false
+          const rect = step.getBoundingClientRect()
+          const mid = window.innerHeight * 0.5
+          return rect.top <= mid && rect.bottom >= mid
+        })
+        if (!focusBandOccupied) setActiveIndex(-1)
       },
       { rootMargin: '-46% 0px -46% 0px', threshold: 0 },
     )
