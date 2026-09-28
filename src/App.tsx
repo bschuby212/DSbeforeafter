@@ -424,7 +424,6 @@ function CaseSwitcher({
 }) {
   return (
     <div className="case-switcher" role="tablist" aria-label="Screen UX comparisons">
-      <span className="case-switcher__hint">UX comparison</span>
       <div className="case-switcher__tabs">
         {cases.map((item) => {
           const selected = item.id === activeId
@@ -547,13 +546,15 @@ function BeforeAfterStory({
       aria-labelledby={`story-title-${set.id}`}
     >
       <header className="story__header">
-        <CaseSwitcher
-          cases={cases}
-          activeId={set.id}
-          onSelect={onSelectCase}
-        />
         <h2 id={`story-title-${set.id}`}>{set.title}</h2>
-        <p>{set.summary}</p>
+        <div className="story__header-aside">
+          <p>{set.summary}</p>
+          <CaseSwitcher
+            cases={cases}
+            activeId={set.id}
+            onSelect={onSelectCase}
+          />
+        </div>
       </header>
 
       <div className="story__desktop story__exchange" key={set.id}>
